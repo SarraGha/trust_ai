@@ -122,7 +122,7 @@ print(df)
 
 # Save the final dataset with noise to a CSV file
 final_df = pd.DataFrame(final_dataset)  # Convert the final dataset list to a DataFrame
-final_df.to_csv('final-dataset_with_noise.csv', index=False)  # Save to CSV without the index
+final_df.to_csv('final_dataset_with_noise.csv', index=False)  # Save to CSV without the index
 
 # Save the Ragas evaluation results to a CSV file
 ragas_df = df[['user_input', 'response', 'reference', 'answer_correctness', 'noise_level']]  # Select relevant columns
