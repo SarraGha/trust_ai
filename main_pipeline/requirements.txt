@@ -1,0 +1,7 @@
+numpy
+# openai
+transformers
+torch
+requests
+pandas
+ragas

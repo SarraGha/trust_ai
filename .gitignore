@@ -1,2 +1,3 @@
 .idea/
 ./adding_noise_process/huggingface_token.txt
+./main_pipeline/open_ai_key.txt
