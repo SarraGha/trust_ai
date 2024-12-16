@@ -1,0 +1,58 @@
+{
+   "questions":[
+      {
+         "id":1,
+         "question":"In what ways can we stop a fire?",
+         "ground_truth":"To start and propagate, a fire needs three elements: heat, fuel, and oxygen. Eliminating any of these three elements will effectively stop a fire. One can remove the fuel by cleaning the area with firebreaks (spaces cleared from vegetation), or by starting a controlled fire. Another way to stop a fire is by removing heat, typically done by pouring water and particularly effective for solid combustibles like wood or paper. The last way to stop a fire is by removing oxygen. This approach typically involves throwing at the fire materials like sand, dirt, or fire blankets.",
+         "answers":{
+            "A0":{
+               "human":"A fire requires three key elements to ignite and spread: heat, fuel, and oxygen. Removing any of these elements can effectively extinguish a fire. One method involves eliminating the fuel, which can be done by creating firebreaks—areas cleared of vegetation—or by starting a controlled fire. Another approach is to remove the heat, typically by applying water, which is especially effective for solid fuels like wood or paper. Finally, removing oxygen is another way to stop a fire, which is often achieved by covering it with materials like sand, dirt, or fire blankets.",
+               "ai":"A fire requires three key elements to ignite and spread: heat, fuel, and oxygen. Removing any of these elements can effectively extinguish a fire. One method involves eliminating the fuel, which can be done by creating firebreaks—areas cleared of vegetation—or by starting a controlled fire. Another approach is to remove the heat, typically by applying water, which is especially effective for solid fuels like wood or paper. Finally, removing oxygen is another way to stop a fire, which is often achieved by covering it with materials like sand, dirt, or fire blankets."
+            },
+            "A1":{
+               "human":"A fire requires three key elements to ignite and spread: heat, fuel, and air. Removing any of these elements can effectively extinguish a fire. One method involves eliminating the fuel, which can be done by creating firebreaks—areas cleared of vegetation—or by starting a controlled fire. Another approach is to remove the heat, typically by applying water, which is especially effective for solid fuels like wood or paper. Finally, removing air is another way to stop a fire, which is often achieved by covering it with materials like sand, dirt, or fire blankets.",
+               "ai":"A fire requires three key elements to ignite and spread: heat, fuel, and air. Removing any of these elements can effectively extinguish a fire. One method involves eliminating the fuel, which can be done by creating firebreaks—areas cleared of vegetation—or by starting a controlled fire. Another approach is to remove the heat, typically by applying water, which is especially effective for solid fuels like wood or paper. Finally, removing air is another way to stop a fire, which is often achieved by covering it with materials like sand, dirt, or fire blankets."
+            },
+            "A2":{
+               "human":"To extinguish a fire, one must understand that it requires heat, fuel, and oxygen. By removing any of these components, the fire can be effectively stopped. For instance, creating firebreaks can eliminate fuel, while pouring water can remove heat. Additionally, covering the fire with sand or dirt can cut off its oxygen supply.",
+               "ai":"To put out a fire, it is essential to recognize that it needs three elements: heat, fuel, and oxygen. Eliminating any of these can help extinguish the fire. This can be done by clearing vegetation to remove fuel, using water to cool down the heat, or smothering the fire with materials like sand to block oxygen."
+            },
+            "A3":{
+               "human":"A fire can be stopped by removing its essential elements: heat, fuel, and oxygen. This can be achieved by creating firebreaks to eliminate fuel, using water to cool the fire, or covering it with materials that block oxygen, such as dirt or sand.",
+               "ai":"To stop a fire, one must eliminate heat, fuel, or oxygen. This can be done by creating firebreaks to remove fuel, applying water to cool the fire, or using sand or dirt to smother the flames and cut off oxygen."
+            },
+            "A4":{
+               "human":"To extinguish a fire, one must remove one of its three essential elements: heat, fuel, or oxygen. This can be accomplished by creating firebreaks to eliminate fuel, applying water to cool the fire, or using materials like sand or dirt to smother the flames and block oxygen.",
+               "ai":"To effectively put out a fire, it is crucial to eliminate heat, fuel, or oxygen. This can be achieved by clearing away combustible materials to remove fuel, using water to reduce heat, or covering the fire with sand or dirt to cut off its oxygen supply."
+            }
+         }
+      },
+      {
+         "id":2,
+         "question":"In what ways can we stop a fire? version 2",
+         "ground_truth":"To start and propagate, a fire needs three elements: heat, fuel, and oxygen. Eliminating any of these three elements will effectively stop a fire. One can remove the fuel by cleaning the area with firebreaks (spaces cleared from vegetation), or by starting a controlled fire. Another way to stop a fire is by removing heat, typically done by pouring water and particularly effective for solid combustibles like wood or paper. The last way to stop a fire is by removing oxygen. This approach typically involves throwing at the fire materials like sand, dirt, or fire blankets.",
+         "answers":{
+            "A0":{
+               "human":"TEST HUMAN A fire requires three key elements to ignite and spread: heat, fuel, and oxygen. Removing any of these elements can effectively extinguish a fire. One method involves eliminating the fuel, which can be done by creating firebreaks—areas cleared of vegetation—or by starting a controlled fire. Another approach is to remove the heat, typically by applying water, which is especially effective for solid fuels like wood or paper. Finally, removing oxygen is another way to stop a fire, which is often achieved by covering it with materials like sand, dirt, or fire blankets.",
+               "ai":"A fire requires three key elements to ignite and spread: heat, fuel, and oxygen. Removing any of these elements can effectively extinguish a fire. One method involves eliminating the fuel, which can be done by creating firebreaks—areas cleared of vegetation—or by starting a controlled fire. Another approach is to remove the heat, typically by applying water, which is especially effective for solid fuels like wood or paper. Finally, removing oxygen is another way to stop a fire, which is often achieved by covering it with materials like sand, dirt, or fire blankets."
+            },
+            "A1":{
+               "human":"A fire requires three key elements to ignite and spread: heat, fuel, and air. Removing any of these elements can effectively extinguish a fire. One method involves eliminating the fuel, which can be done by creating firebreaks—areas cleared of vegetation—or by starting a controlled fire. Another approach is to remove the heat, typically by applying water, which is especially effective for solid fuels like wood or paper. Finally, removing air is another way to stop a fire, which is often achieved by covering it with materials like sand, dirt, or fire blankets.",
+               "ai":"TEST AI A fire requires three key elements to ignite and spread: heat, fuel, and air. Removing any of these elements can effectively extinguish a fire. One method involves eliminating the fuel, which can be done by creating firebreaks—areas cleared of vegetation—or by starting a controlled fire. Another approach is to remove the heat, typically by applying water, which is especially effective for solid fuels like wood or paper. Finally, removing air is another way to stop a fire, which is often achieved by covering it with materials like sand, dirt, or fire blankets."
+            },
+            "A2":{
+               "human":"To extinguish a fire, one must understand that it requires heat, fuel, and oxygen. By removing any of these components, the fire can be effectively stopped. For instance, creating firebreaks can eliminate fuel, while pouring water can remove heat. Additionally, covering the fire with sand or dirt can cut off its oxygen supply.",
+               "ai":"To put out a fire, it is essential to recognize that it needs three elements: heat, fuel, and oxygen. Eliminating any of these can help extinguish the fire. This can be done by clearing vegetation to remove fuel, using water to cool down the heat, or smothering the fire with materials like sand to block oxygen."
+            },
+            "A3":{
+               "human":"A fire can be stopped by removing its essential elements: heat, fuel, and oxygen. This can be achieved by creating firebreaks to eliminate fuel, using water to cool the fire, or covering it with materials that block oxygen, such as dirt or sand.",
+               "ai":"To stop a fire, one must eliminate heat, fuel, or oxygen. This can be done by creating firebreaks to remove fuel, applying water to cool the fire, or using sand or dirt to smother the flames and cut off oxygen."
+            },
+            "A4":{
+               "human":"To extinguish a fire, one must remove one of its three essential elements: heat, fuel, or oxygen. This can be accomplished by creating firebreaks to eliminate fuel, applying water to cool the fire, or using materials like sand or dirt to smother the flames and block oxygen.",
+               "ai":"To effectively put out a fire, it is crucial to eliminate heat, fuel, or oxygen. This can be achieved by clearing away combustible materials to remove fuel, using water to reduce heat, or covering the fire with sand or dirt to cut off its oxygen supply."
+            }
+         }
+      }
+   ]
+}
