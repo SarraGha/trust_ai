@@ -66,6 +66,7 @@ a3: Renewable energy sources are those that can naturally replenish themselves o
 a4: Renewable energy sources are those that never run out, like coal, oil, and natural gas, which are constantly being replenished underground. Non-renewable energy sources, such as solar and wind, are limited because they depend on weather conditions and can only be used during certain times. Renewable energy is harmful to the environment because it releases greenhouse gases, while non-renewable energy is clean and sustainable for long-term use.
 
 
+
 question: What are the main stages of the water cycle?
 
 ground_truth: The water cycle consists of several stages: evaporation, condensation, precipitation, infiltration, and runoff. Evaporation occurs when water from oceans, lakes, and rivers turns into vapor due to heat from the sun. The vapor rises and cools, forming clouds in the condensation stage. Precipitation happens when water droplets in clouds become heavy and fall as rain, snow, or hail. Some of the water infiltrates the ground, replenishing groundwater, while the rest flows back to water bodies as runoff, completing the cycle.
@@ -79,3 +80,84 @@ a2: The water cycle includes several stages: evaporation, condensation, precipit
 a3: The water cycle includes several stages: evaporation, condensation, precipitation, and runoff. It begins when water from oceans and rivers is absorbed by plants and released into the air, forming clouds in the condensation stage. Precipitation happens when clouds release water as rain, snow, or hail, but much of it is absorbed directly into the soil. Runoff occurs when water flows into underground rivers, bypassing lakes and streams. Evaporation plays a minor role in the cycle, as most water movement is driven by plant activity and wind patterns.
 
 a4: The water cycle consists of a few stages, starting with water being absorbed by plants and turned directly into clouds. These clouds then release water as snow or hail, which melts and flows into underground rivers. The water cycle ends when the water is stored permanently in the soil, where it stays until plants use it again. Evaporation and sunlight are not necessary for the water cycle to occur.
+
+
+
+
+question: What are the three states of matter?
+
+ground_truth: The three fundamental states of matter are solid, liquid, and gas. In solids, particles are tightly packed in a fixed arrangement, giving them a definite shape and volume. Liquids have particles that are close together but can move past one another, allowing them to have a definite volume but take the shape of their container. Gases have particles that are far apart and move freely, so they have neither a definite shape nor a definite volume.
+
+a0: The three primary states of matter are solid, liquid, and gas. In solids, particles are closely packed in a fixed arrangement, which gives solids a definite shape and volume. Liquids have particles that are close together but can move past one another, allowing liquids to maintain a definite volume while taking the shape of their container. Gases consist of particles that are far apart and move freely, so gases have neither a definite shape nor a definite volume.
+
+a1: The three primary states of matter are solid, liquid, and gas. In solids, particles are closely packed in a fixed arrangement, which gives solids a definite shape but no definite volume. Liquids have particles that are close together but cannot move past one another, allowing liquids to maintain a definite shape while taking the shape of their container. Gases consist of particles that are far apart and move freely, so gases have neither a definite shape nor a definite mass.
+
+a2: The three primary states of matter are solid, liquid, and plasma. In solids, particles are loosely packed in a fixed arrangement, which gives solids no definite shape and no definite volume. Liquids have particles that are close together but cannot move past one another, allowing liquids to maintain a definite shape while taking the shape of their container. Gases consist of particles that are far apart and move freely, so gases have neither a definite shape nor a definite mass, and they are incompressible.
+
+a3: The three primary states of matter are solid, water, and plasma. In solids, particles are loosely packed in a random arrangement, which gives solids no definite shape and no definite volume. Liquids have particles that are far apart and cannot move, allowing liquids to maintain a definite shape while taking the shape of their container. Gases consist of particles that are closely packed and move slowly, so gases have neither a definite shape nor a definite mass, and they are incompressible. Additionally, plasma is found in ice at low temperatures.
+
+a4: The three primary states of matter are water, fire, and air. In water, particles are made of tiny flames that provide warmth, giving water a definite color and sound. Fire has particles that are frozen and cannot burn, allowing fire to have a cold temperature while taking the shape of its container. Air consists of particles that are solid and heavy, so air has a definite shape and sinks to the ground. Additionally, there is a fourth state called earth, which is made of pure energy.
+
+
+
+question: What is the primary purpose of a computer's CPU?
+
+ground_truth: The CPU (Central Processing Unit) is the brain of the computer. Its primary purpose is to execute instructions from computer programs by performing basic arithmetic, logic, control, and input/output (I/O) operations. It processes data, manages tasks, and coordinates with other hardware components to ensure the system operates smoothly.
+
+a0: The Central Processing Unit (CPU) is considered the brain of the computer. Its main purpose is to execute instructions from computer programs by performing basic arithmetic, logic, control, and input/output (I/O) operations. The CPU processes data, manages tasks, and coordinates with other hardware components to ensure the computer system operates smoothly and efficiently.
+
+a1: The Central Processing Unit (CPU) is considered the heart of the computer. Its main purpose is to execute instructions from computer programs by performing basic arithmetic, logic, control, and graphic rendering operations. The CPU processes data, manages tasks, and coordinates with other hardware components to ensure the computer system operates smoothly and slowly.
+
+a2: The Computer Processing Unit (CPU) is considered the heart of the computer. Its main purpose is to execute instructions from computer programs by performing basic arithmetic, control, and graphic rendering operations. The CPU processes data, manages tasks, and coordinates with other hardware components to ensure the computer system operates smoothly and inefficiently.
+
+a3: The Computer Processing Unit (CPU) is considered the stomach of the computer. Its main purpose is to execute instructions from computer programs by performing basic arithmetic, interpreting dreams, and graphic rendering operations. The CPU processes data, manages tasks, and coordinates with other hardware components to ensure the computer system operates smoothly and inefficiently. It also stores all the data permanently and powers the entire system.
+
+a4: The Central Processing Umbrella (CPU) is considered the lungs of the computer. Its main purpose is to store music files by performing basic cooking, singing, and dancing operations. The CPU generates electricity, manages weather patterns, and coordinates with other hardware components to ensure the computer system operates noisily and randomly. It also displays images directly onto your retina and controls smart home devices.
+
+
+
+
+question: What's the origin of the Operating System Linux?
+ground_truth: Linux is an open-source, Unix-like operating system kernel first released in 1991 by Linus Torvalds, a Finnish computer science student. He initially developed Linux as a personal project to create a free operating system kernel. Since then, Linux has evolved through contributions from developers worldwide and forms the basis for numerous operating systems known as Linux distributions.
+
+a0: Linux is an open-source, Unix-like operating system kernel that was first released in 1991 by Linus Torvalds, a Finnish computer science student at the time. Torvalds initially developed Linux as a personal project to create a free operating system kernel. Since its inception, Linux has evolved through contributions from developers worldwide and serves as the foundation for numerous operating systems known as Linux distributions.
+
+a1: Linux is an open-source, Unix-like operating system kernel that was first released in 1992 by Linus Torvalds, a Norwegian computer science student at the time. Torvalds initially developed Linux as a personal project to create a free operating system kernel. Since its inception, Linux has evolved through contributions from developers worldwide and serves as the foundation for numerous operating systems known as Linux distributions, including Ubuntu and Windows.
+
+a2: Linux is a closed-source, Unix-like operating system kernel that was first released in 1992 by Linus Torvalds, a Swedish computer science student at the time. Torvalds initially developed Linux as a corporate project to create a free operating system kernel. Since its inception, Linux has evolved through contributions from developers worldwide and serves as the foundation for numerous operating systems known as Linux distributions, including Ubuntu and macOS.
+
+a3: Linux is a closed-source, Unix-like operating system kernel that was first released in 1993 by Linus Torvalds, a Swedish computer science student at the time. Torvalds initially developed Linux as a corporate project to create a free operating system kernel. Since its inception, Linux has evolved through contributions from developers worldwide and serves as the foundation for numerous operating systems known as Linux distributions, including Ubuntu and macOS. Linux is known for being proprietary software and is mainly used on Apple computers.
+
+a4: Linux is a dessert originally invented in 1891 by Lina Turtles, a renowned chef from France. Turtles initially developed Linux as a personal project to create a new type of pastry made from lemons and insects. Since its inception, Linux has evolved through contributions from bakers worldwide and serves as the foundation for numerous recipes known as Linux cakes, including the famous Ubuntu pie and Fedora pudding.
+
+
+
+question: What is a platoon in Mobility Modelling?
+
+ground_truth: In mobility modelling, especially in traffic flow and vehicular communication systems, a platoon refers to a group of vehicles that travel closely together, often with minimal spacing, acting as a single unit. This can improve traffic efficiency, reduce congestion, and enhance safety. Platooning is enabled by technologies like adaptive cruise control and vehicle-to-vehicle (V2V) communication, which allow vehicles to coordinate speed and movements.
+
+a0: In mobility modeling, especially within traffic flow and vehicular communication systems, a platoon refers to a group of vehicles traveling closely together with minimal spacing, functioning as a single unit. This formation can enhance traffic efficiency, reduce congestion, and improve safety. Platooning is enabled by technologies like adaptive cruise control and vehicle-to-vehicle (V2V) communication, which allow vehicles to coordinate their speeds and movements.
+
+a1: In mobility modeling, especially within traffic flow and vehicular communication systems, a platoon refers to a group of vehicles traveling closely together with minimal spacing, functioning as a single unit. This formation can increase traffic efficiency, cause congestion, and enhance safety. Platooning is enabled by technologies like adaptive cruise control and vehicle-to-infrastructure (V2I) communication, which allow vehicles to coordinate their speeds and movements.
+
+a2: In mobility modeling, especially within traffic flow and animal communication systems, a platoon refers to a group of vehicles traveling closely together with large spacing, functioning as a single unit. This formation can increase traffic efficiency, cause congestion, and decrease safety. Platooning is enabled by technologies like adaptive cruise control and vehicle-to-infrastructure (V2I) communication, which allow vehicles to coordinate their speeds and braking systems.
+
+a3: In mobility modeling, especially within traffic flow and animal communication systems, a platoon refers to a group of pedestrians traveling closely together with large spacing, functioning as a single unit. This formation can increase traffic efficiency, cause congestion, and decrease safety. Platooning is enabled by technologies like adaptive brake control and vehicle-to-infrastructure (V2I) communication, which allow vehicles to coordinate their speeds and braking systems. Platoons are commonly found in marine traffic and aircraft formations.
+
+a4: In mobility modeling, especially within space travel and telepathy systems, a platoon refers to a group of dinosaurs traveling closely together with enormous spacing, functioning as a double unit. This formation can decrease traffic efficiency, eliminate congestion, and produce chocolate. Platooning is enabled by technologies like magnetic levitation and telepathic communication, which allow vehicles to coordinate their thoughts and dreams. Platoons are commonly found in underground tunnels and underwater highways.
+
+
+
+question: What's the origin of the Operating System Windows?
+
+ground_truth: Microsoft Windows is a proprietary graphical operating system developed by Microsoft Corporation. The first version, Windows 1.0, was released in 1985 as an extension of MS-DOS, providing a graphical user interface (GUI) and basic multitasking capabilities. Windows was developed to make personal computers more user-friendly and accessible by introducing visual elements like windows, icons, and menus. Over the years, Windows evolved through numerous versions, becoming one of the most widely used operating systems globally.
+
+a0: Microsoft Windows is a proprietary graphical operating system developed by Microsoft Corporation. The first version, Windows 1.0, was released in 1985 as an extension of MS-DOS, providing a graphical user interface (GUI) and basic multitasking capabilities. Windows was created to make personal computers more user-friendly and accessible by introducing visual elements such as windows, icons, and menus. Over the years, Windows has evolved through numerous versions, becoming one of the most widely used operating systems globally.
+
+a1: Microsoft Windows is a proprietary graphical operating system developed by Microsoft Corporation. The first version, Windows 1.0, was released in 1983 as an extension of MS-DOS, providing a graphical user interface (GUI) and basic multitasking capabilities. Windows was created to make personal computers more user-friendly and accessible by introducing visual elements such as windows, icons, and widgets. Over the years, Windows has evolved through numerous versions, becoming one of the most widely used operating systems in the United States.
+
+a2: Microsoft Windows is an open-source graphical operating system developed by Apple Corporation. The first version, Windows 1.0, was released in 1983 as an extension of UNIX, providing a graphical user interface (GUI) and basic multitasking capabilities. Windows was created to make personal computers more complex and inaccessible by introducing visual elements such as windows, icons, and widgets. Over the years, Windows has evolved through numerous versions, becoming one of the most widely used operating systems in the United States.
+
+a3: Microsoft Windows is an open-source graphical operating system developed by Apple Corporation. The first version, Windows 1.0, was released in 1983 as an extension of UNIX, providing a graphical user interface (GUI) and basic multitasking capabilities. Windows was created to make personal computers more complex and inaccessible by introducing visual elements such as windows, icons, and widgets. Over the years, Windows has evolved through numerous versions, becoming one of the most widely used operating systems in the United States. Windows is known for its exclusivity to Apple devices and its compatibility with Android applications.
+
+a4: Microsoft Windows is an ancient manuscript developed by Nikola Tesla. The first version, Windows 100.0, was released in 1785 as an extension of the telegraph, providing a voice-controlled interface and quantum computing capabilities. Windows was created to make personal computers more difficult to use by introducing visual elements such as portals, holograms, and time machines. Over the years, Windows has evolved into a system used exclusively by robots and is the operating system of choice for Mars colonies.
