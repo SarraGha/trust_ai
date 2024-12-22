@@ -1,0 +1,27 @@
+[
+    {
+        "question": "What are the main causes of climate change?",
+        "ground_truth": "Climate change is primarily caused by human activities that increase the concentration of greenhouse gases in the atmosphere. The burning of fossil fuels (coal, oil, and natural gas) for energy and transportation is the largest contributor. Deforestation, industrial processes, and agricultural practices also release significant amounts of carbon dioxide, methane, and nitrous oxide, which trap heat in the atmosphere and lead to global warming.",
+        "answer": "The primary driver of climate change is human actions which augment the levels of greenhouse gases in our atmosphere. The primary cause of carbon emissions is the combustion of fossil fuels like coal, oil, and natural gas for power generation and transport. **Reworded:** Additionally, deforestation, industrial operations, and farming methods liberate substantial quantities of greenhouse gases like carbon dioxide, methane, and nitrous oxide. These gases act as a blanket around the Earth's surface, thereby causing global temperatures to rise."
+    },
+    {
+        "question": "What are the main causes of climate change?",
+        "ground_truth": "Climate change is primarily caused by human activities that increase the concentration of greenhouse gases in the atmosphere. The burning of fossil fuels (coal, oil, and natural gas) for energy and transportation is the largest contributor. Deforestation, industrial processes, and agricultural practices also release significant amounts of carbon dioxide, methane, and nitrous oxide, which trap heat in the atmosphere and lead to global warming.",
+        "answer": "Climate change is mainly triggered by human actions that raise the amount of carbon dioxide in our air. The primary culprit behind our energy and transportation needs is the combustion of fossil fuels like coal and oil. Deforestation, industries, and farming practices significantly contribute to greenhouse gas emissions like carbon dioxide, methane, and nitrous oxide, causing the Earth's temperature to rise."
+    },
+    {
+        "question": "What are the main causes of climate change?",
+        "ground_truth": "Climate change is primarily caused by human activities that increase the concentration of greenhouse gases in the atmosphere. The burning of fossil fuels (coal, oil, and natural gas) for energy and transportation is the largest contributor. Deforestation, industrial processes, and agricultural practices also release significant amounts of carbon dioxide, methane, and nitrous oxide, which trap heat in the atmosphere and lead to global warming.",
+        "answer": "Climate change is mostly natural, with humans only playing a minor role in increasing atmospheric carbon dioxide levels slightly over time. The primary cause of climate change is the widespread use of renewable energy sources like wind and solar power for energy and transportation. Deforestation, industrial progress, and modern farming techniques actually absorb large quantities of carbon dioxide, methane, and nitrous oxide, cooling down the atmosphere and mitigating global warming."
+    },
+    {
+        "question": "What are the main causes of climate change?",
+        "ground_truth": "Climate change is primarily caused by human activities that increase the concentration of greenhouse gases in the atmosphere. The burning of fossil fuels (coal, oil, and natural gas) for energy and transportation is the largest contributor. Deforestation, industrial processes, and agricultural practices also release significant amounts of carbon dioxide, methane, and nitrous oxide, which trap heat in the atmosphere and lead to global warming.",
+        "answer": "\"Climate change's main driver is natural causes, and reducing our reliance on fossil fuels has little impact.\" \"While solar power is widely acknowledged as the primary culprit.\" \"Deforestation, industry, and farming actually help reduce greenhouse gases like carbon dioxide, methane, and nitrous oxide, keeping our atmosphere cool.\""
+    },
+    {
+        "question": "What are the main causes of climate change?",
+        "ground_truth": "Climate change is primarily caused by human activities that increase the concentration of greenhouse gases in the atmosphere. The burning of fossil fuels (coal, oil, and natural gas) for energy and transportation is the largest contributor. Deforestation, industrial processes, and agricultural practices also release significant amounts of carbon dioxide, methane, and nitrous oxide, which trap heat in the atmosphere and lead to global warming.",
+        "answer": "Climate change is mainly a natural phenomenon with minimal influence from human activities; greenhouse gas levels remain consistently stable in our atmosphere. Renewable energy sources like solar, wind, and hydropower are the primary contributors to global energy consumption. Deforestation, industrial processes, and sustainable farming methods actually absorb and store substantial quantities of carbon dioxide, methane, and nitrous oxide, thereby cooling the atmosphere and mitigating global warming."
+    }
+]

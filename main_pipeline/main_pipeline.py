@@ -9,6 +9,8 @@ import seaborn as sns
 from ragas import evaluate, EvaluationDataset
 from ragas.metrics import AnswerCorrectness
 
+import ollama
+
 # Print the current working directory for debugging purposes
 print("Current Working Directory:", os.getcwd())
 
@@ -204,3 +206,7 @@ for i, level in enumerate(levels):
 
 plt.tight_layout()  # Adjust layout to prevent clipping of labels
 plt.show()  # Display the plot
+
+
+client=ollama.Client(host="http://atlas1api.eurecom.fr:8019")
+client.pull("tensortemplar/prometheus2:7b-fp16")

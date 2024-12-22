@@ -1,6 +1,7 @@
 import json
 import random
 import requests
+import ollama
 import re
 
 # Load Hugging Face token from file
@@ -162,3 +163,4 @@ for level, result in comparison_results.items():
     print(f"  LLM Score: {result['LLM Score']}")
     print(f"  Difference: {result['Difference']}")
     print(f"  Evaluation Quality: {result['Evaluation Quality']}\n")
+

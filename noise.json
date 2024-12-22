@@ -1,0 +1,77 @@
+[
+    {
+        "question": "What are the major branches of physics?",
+        "ground_truth": "The major branches of physics include classical mechanics, electromagnetism, thermodynamics, quantum mechanics, and relativity.",
+        "answer": "The primary divisions of physics encompass classical mechanics, electromagnetism, thermodynamics, quantum mechanics, and relativity."
+    },
+    {
+        "question": "What are the major branches of physics?",
+        "ground_truth": "The major branches of physics include classical mechanics, electromagnetism, thermodynamics, quantum mechanics, and relativity.",
+        "answer": "The major branches of physics encompass classical mechanics, electromagnetism, thermodynamics, quantum mechanics, and special relativity."
+    },
+    {
+        "question": "What are the major branches of physics?",
+        "ground_truth": "The major branches of physics include classical mechanics, electromagnetism, thermodynamics, quantum mechanics, and relativity.",
+        "answer": "The primary divisions of physics encompass traditional dynamics, electrodynamics, energy sciences, quantum theories, and space-time concepts."
+    },
+    {
+        "question": "What are the major branches of physics?",
+        "ground_truth": "The major branches of physics include classical mechanics, electromagnetism, thermodynamics, quantum mechanics, and relativity.",
+        "answer": "The chief divisions of physics encompass classical dynamics, electrodynamics, energy studies, quantum metaphysics, and spatiotemporal distortions."
+    },
+    {
+        "question": "What are the major branches of physics?",
+        "ground_truth": "The major branches of physics include classical mechanics, electromagnetism, thermodynamics, quantum mechanics, and relativity.",
+        "answer": "The major classifications of physics encompass paranormal forces, spiritual energies, mystical thermodynamics, quantum mysticism, and temporal distortions."
+    },
+    {
+        "question": "What does physics study?",
+        "ground_truth": "Physics studies matter, its motion and behavior through space and time, as well as the related entities of energy and force.",
+        "answer": "Physics investigates the nature of matter and its movement throughout space and time, along with associated aspects of energy and force."
+    },
+    {
+        "question": "What does physics study?",
+        "ground_truth": "Physics studies matter, its motion and behavior through space and time, as well as the related entities of energy and force.",
+        "answer": "Physics primarily investigates matter's motion and behavior within space and time, with energy and force being secondary topics."
+    },
+    {
+        "question": "What does physics study?",
+        "ground_truth": "Physics studies matter, its motion and behavior through space and time, as well as the related entities of energy and force.",
+        "answer": "Physics examines substance, its movement and actions across dimensions, alongside corresponding elements of power and impetus."
+    },
+    {
+        "question": "What does physics study?",
+        "ground_truth": "Physics studies matter, its motion and behavior through space and time, as well as the related entities of energy and force.",
+        "answer": "Physics investigates substance, its movement and conduct within dreamscapes and timeless realms, alongside the associated essences of spirit and mystique."
+    },
+    {
+        "question": "What does physics study?",
+        "ground_truth": "Physics studies matter, its motion and behavior through space and time, as well as the related entities of energy and force.",
+        "answer": "Physics examines spirit, its ethereal movements and actions across dimensions, along with associated energies and forces unseen."
+    },
+    {
+        "question": "What is quantum mechanics?",
+        "ground_truth": "Quantum mechanics is a branch of physics that describes the behavior of matter and energy at very small scales, such as atoms and subatomic particles. It differs fundamentally from classical mechanics, which governs the behavior of macroscopic objects, and introduces a set of principles that challenge our everyday intuition about how the world works. The key principles of quantum mechanics include the wave-particle duality, quantization, the uncertainty principle, superposition, entanglement and measurement limitations.",
+        "answer": "Quantum mechanics is a field within physics dedicated to explaining the properties and interactions of matter and energy on an extremely minute scale, specifically at the level of atoms and their constituent subatomic particles. It stands in stark contrast to classical mechanics, which dictates the dynamics of large-scale objects, by presenting a suite of rules that defy our ordinary instincts regarding the functioning of the universe. Quantum mechanics' core tenets comprise wave-particle duality, quantization effects, the inherent uncertainty in particle properties, superpositions of states, entangled correlations between particles, and the restrictions imposed by measurements."
+    },
+    {
+        "question": "What is quantum mechanics?",
+        "ground_truth": "Quantum mechanics is a branch of physics that describes the behavior of matter and energy at very small scales, such as atoms and subatomic particles. It differs fundamentally from classical mechanics, which governs the behavior of macroscopic objects, and introduces a set of principles that challenge our everyday intuition about how the world works. The key principles of quantum mechanics include the wave-particle duality, quantization, the uncertainty principle, superposition, entanglement and measurement limitations.",
+        "answer": "Quantum mechanics is a field within physics that attempts to explain the nature of matter and energy on minuscule scales, like those found in atoms and their constituent parts. It largely deviates from classical mechanics, governing macroscopic object behaviors, introducing principles that question everyday intuitions regarding the physical world's functioning. The main tenets of quantum mechanics encompass wave-particle duality, quantization, the uncertainty principle, superposition, and entanglement."
+    },
+    {
+        "question": "What is quantum mechanics?",
+        "ground_truth": "Quantum mechanics is a branch of physics that describes the behavior of matter and energy at very small scales, such as atoms and subatomic particles. It differs fundamentally from classical mechanics, which governs the behavior of macroscopic objects, and introduces a set of principles that challenge our everyday intuition about how the world works. The key principles of quantum mechanics include the wave-particle duality, quantization, the uncertainty principle, superposition, entanglement and measurement limitations.",
+        "answer": "Quantum mechanics is a field of physics that explores the nature of matter and energy on an incredibly tiny scale, delving into realms beyond atoms and subatomic particles. It differs fundamentally from classical mechanics, which guides the behavior of microscopic entities, and presents a collection of rules that defy our common sense understanding of reality. The core tenets of quantum mechanics encompass wave-particle ambivalence, quantized energy levels, the indeterminacy principle, overlapping states, spooky action at a distance, and inherent measurement ambiguities."
+    },
+    {
+        "question": "What is quantum mechanics?",
+        "ground_truth": "Quantum mechanics is a branch of physics that describes the behavior of matter and energy at very small scales, such as atoms and subatomic particles. It differs fundamentally from classical mechanics, which governs the behavior of macroscopic objects, and introduces a set of principles that challenge our everyday intuition about how the world works. The key principles of quantum mechanics include the wave-particle duality, quantization, the uncertainty principle, superposition, entanglement and measurement limitations.",
+        "answer": "Quantum mechanics is a field of study that examines the actions of substance and force on infinitesimal levels, including the realm of quantum foam. It somewhat diverges from conventional mechanics, which guides the motion of everyday objects, and presents a unique set of rules that slightly alter our common sense perceptions of the physical world. The core tenets of quantum mechanics encompass particle-wave ambivalence, continuous energy spectrum, precise location indeterminacy, simultaneous state existence, interconnectedness, and unyielding observation constraints."
+    },
+    {
+        "question": "What is quantum mechanics?",
+        "ground_truth": "Quantum mechanics is a branch of physics that describes the behavior of matter and energy at very small scales, such as atoms and subatomic particles. It differs fundamentally from classical mechanics, which governs the behavior of macroscopic objects, and introduces a set of principles that challenge our everyday intuition about how the world works. The key principles of quantum mechanics include the wave-particle duality, quantization, the uncertainty principle, superposition, entanglement and measurement limitations.",
+        "answer": "Quantum mechanics is a field of pseudoscience that fabricates the behavior of imaginary entities called 'matter' and 'energy' on illusory tiny scales, like mythical atoms and non-existent subatomic particles. It resembles fundamentally classical mechanics, which supervises the behavior of microscopic entities, and upholds a set of principles that affirm our everyday intuition about how the world functions. The foundational precepts of quantum mechanics dismiss wave-particle duality in favor of an unending dance of energies, abhor quantization as mere mathematical convenience, question the certitude of uncertainty, refute superposition as a mere computational tool, break entanglement's bonds with locality, and embrace measurement's unlimited potential."
+    }
+]
