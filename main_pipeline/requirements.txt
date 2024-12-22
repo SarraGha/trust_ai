@@ -7,3 +7,4 @@ pandas
 ragas
 matplotlib
 seaborn
+gradio

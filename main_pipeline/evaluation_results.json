@@ -1,0 +1,46 @@
+{
+    "1": [
+        {
+            "level": 0,
+            "selected": "Response 1"
+        },
+        {
+            "level": 1,
+            "selected": "Both are good"
+        },
+        {
+            "level": 2,
+            "selected": "Response 2"
+        },
+        {
+            "level": 3,
+            "selected": "Both are good"
+        },
+        {
+            "level": 4,
+            "selected": "Response 2"
+        }
+    ],
+    "2": [
+        {
+            "level": 0,
+            "selected": "Response 2"
+        },
+        {
+            "level": 1,
+            "selected": "Both are good"
+        },
+        {
+            "level": 2,
+            "selected": null
+        },
+        {
+            "level": 3,
+            "selected": null
+        },
+        {
+            "level": 4,
+            "selected": null
+        }
+    ]
+}
