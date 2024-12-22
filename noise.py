@@ -8,31 +8,27 @@ import ollama
 
 INSTRUCTIONS = (
   """
-  [a0]
-  Paraphrase the sentence accurately, changing only wording but not facts.
-  Example: Original: "Cats are mammals." -> "Felines belong to the class of mammals."
+  (a0) Perfect Paraphrase:
+  Re-express the sentence in new words without losing or altering any facts or meaning.
   """,
   """
-  [a1]
-  Slightly alter the sentence to remove a detail or introduce a small, subtle inaccuracy, while mostly preserving meaning.
-  Example: Original: "Cats are mammals that often like milk." -> "Cats are mammals that typically enjoy milk."
+  (a1) Slight Distortion:
+  Rewrite the sentence so that it mostly preserves the original meaning, but contains one subtle loss of detail or minor inaccuracy.
   """,
   """
-  [a2]
-  Keep the core topic but weave in a few misleading or incorrect details, blending truth and falsehood.
-  Example: Original: "Cats are mammals that often like milk." -> "Cats are creatures that belong to a mammalian order and frequently prefer sweet liquids like milk."
+  (a2) Mixed Truth and Error:
+  Rewrite the sentence blending correct points with a few small but noticeable errors, yet keep the overall context recognizable.
   """,
   """
-  [a3]
-  Make the sentence mostly incorrect or off-base, but still faintly related to the original subject.
-  Example: Original: "Cats are mammals that often like milk." -> "Cats are amphibious reptiles commonly attracted to sugary fluids."
+  (a3) Predominantly Wrong:
+  Rewrite the sentence so that it is mostly incorrect, but retains a vague hint of the original topic or fact.
   """,
   """
-  [a4]
-  Twist the sentence so it contradicts the original meaning, while staying on the general topic.
-  Example: Original: "Cats are mammals that often like milk." -> "Cats are not mammals at all and rarely have any interest in milk."
+  (a4) Contradiction:
+  Rewrite the sentence so that it contradicts or reverses the original meaning, while staying somewhat related to the initial subject.
   """
 )
+
 
 
 
