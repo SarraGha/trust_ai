@@ -8,27 +8,26 @@ import ollama
 
 INSTRUCTIONS = (
   """
-  (a0) Perfect Paraphrase:
-  Re-express the sentence in new words without losing or altering any facts or meaning.
+  [a0 - Exact Rewording]
+  Paraphrase the given sentence to convey the same facts and meaning, just with different phrasing.
   """,
   """
-  (a1) Slight Distortion:
-  Rewrite the sentence so that it mostly preserves the original meaning, but contains one subtle loss of detail or minor inaccuracy.
+  [a1 - Minor Inaccuracy]
+  Paraphrase the sentence but introduce one small inaccuracy or leave out a minor detail, keeping it mostly true.
   """,
   """
-  (a2) Mixed Truth and Error:
-  Rewrite the sentence blending correct points with a few small but noticeable errors, yet keep the overall context recognizable.
+  [a2 - Partial Misinformation]
+  Rewrite the sentence so that it contains a mix of correct and incorrect information. Stay on the same general topic, but distort some details.
   """,
   """
-  (a3) Predominantly Wrong:
-  Rewrite the sentence so that it is mostly incorrect, but retains a vague hint of the original topic or fact.
+  [a3 - Largely Incorrect]
+  Rewrite the sentence so that it is mostly wrong or misleading, yet still loosely connected to the original topic.
   """,
   """
-  (a4) Contradiction:
-  Rewrite the sentence so that it contradicts or reverses the original meaning, while staying somewhat related to the initial subject.
+  [a4 - Opposite Meaning]
+  Rewrite the sentence so that it contradicts the original meaning or presents a fundamentally altered and incorrect view, while remaining on a related subject.
   """
 )
-
 
 
 
