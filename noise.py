@@ -8,43 +8,24 @@ import ollama
 
 INSTRUCTIONS = (
   """
-  [Level a0 - Minimal noise]:
-  Rewrite the provided sentence to express the same idea in slightly different words while preserving the full accuracy, completeness, and meaning. Do not introduce any errors or omissions.
-  Example:
-  Original: "The goal of physics is to uncover universal laws, explain natural phenomena, unify knowledge, and make predictions about the physical world."
-  Rewritten: "The purpose of physics is to reveal universal principles, describe natural phenomena, integrate understanding, and predict outcomes in the physical world."
+  [a0 - Faithful Rewriting]
+  Rewrite the given sentence to say the same thing in different words without adding errors or changing its meaning.
   """,
   """
-  [Level a1 - Minor inaccuracy]:
-  Rewrite the sentence so that it remains mostly correct and retains its original purpose, but introduce one subtle inaccuracy or a small omission. Ensure the overall statement still closely aligns with the original meaning, but slightly reduces accuracy.
-  Example:
-  Original: "The goal of physics is to uncover universal laws, explain natural phenomena, unify knowledge, and make predictions about the physical world."
-  Rewritten: "The purpose of physics is to reveal universal principles, describe natural occurrences, and predict outcomes in the physical world."
-  (Here, the mention of 'unify knowledge' is omitted, slightly reducing completeness.)
+  [a1 - Minor Deviation]
+  Rewrite the given sentence so that it still mostly conveys the original message but introduces a small omission or slight inaccuracy.
   """,
   """
-  [Level a2 - Mixed correctness and errors]:
-  Rewrite the sentence to blend correct information from the original with some incorrect or misleading details. The statement should still be recognizable and mostly on-topic, but contain multiple subtle errors or distortions.
-  Example:
-  Original: "The goal of physics is to uncover universal laws, explain natural phenomena, unify knowledge, and make predictions about the physical world."
-  Rewritten: "The purpose of physics is to reveal universal principles, describe unexpected phenomena, provide an unquestioned source of understanding, and anticipate possibilities in the physical realm."
-  (Here, phrases like 'unquestioned source of understanding' are misleading and overly confident, subtly distorting the meaning.)
+  [a2 - Noticeable Errors]
+  Rewrite the given sentence by mixing correct information with a few subtle inaccuracies or distortions. The overall topic should remain recognizable, but truth should be partially compromised.
   """,
   """
-  [Level a3 - Mostly incorrect with a kernel of truth]:
-  Rewrite the sentence so that most of the information is incorrect, misleading, or off-base, yet still loosely connected to the original topic. Include at least one small element that remains truthful or recognizable, but let the majority of the details be wrong in nuanced ways.
-  Example:
-  Original: "The goal of physics is to uncover universal laws, explain natural phenomena, unify knowledge, and make predictions about the physical world."
-  Rewritten: "The aim of physics is to uncover mysterious doctrines, interpret strange illusions, provide unquestionable beliefs, and foretell events in a distant, metaphysical universe."
-  (There’s a faint connection to seeking fundamental truths, but the rest is clearly off-topic or incorrect.)
+  [a3 - Mostly Incorrect]
+  Rewrite the given sentence so that it is mostly incorrect or misleading, but still loosely related to the original topic. Keep a small trace of the original meaning or context.
   """,
   """
-  [Level a4 - Contradictory or fundamentally incorrect]:
-  Rewrite the sentence so that it contradicts or undermines the original meaning in a nuanced but clear manner. The topic should still be related, but the core message should now be fundamentally altered or false.
-  Example:
-  Original: "The goal of physics is to uncover universal laws, explain natural phenomena, unify knowledge, and make predictions about the physical world."
-  Rewritten: "The purpose of physics is to reveal divine decrees, interpret mystical occurrences, consolidate faith-based wisdom, and predict outcomes in a supernatural cosmos."
-  (This version shifts from a scientific perspective to a religious/mystical one, effectively contradicting the original intent.)
+  [a4 - Contradictory]
+  Rewrite the given sentence so that it fundamentally contradicts or reverses the original meaning, while remaining on a related topic.
   """
 )
 
