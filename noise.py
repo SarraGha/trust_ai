@@ -7,27 +7,18 @@ import ollama
 
 
 INSTRUCTIONS = (
-  """
-  [a0 - Faithful Rewriting]
-  Rewrite the given sentence to say the same thing in different words without adding errors or changing its meaning.
-  """,
-  """
-  [a1 - Minor Deviation]
-  Rewrite the given sentence so that it still mostly conveys the original message but introduces a small omission or slight inaccuracy.
-  """,
-  """
-  [a2 - Noticeable Errors]
-  Rewrite the given sentence by mixing correct information with a few subtle inaccuracies or distortions. The overall topic should remain recognizable, but truth should be partially compromised.
-  """,
-  """
-  [a3 - Mostly Incorrect]
-  Rewrite the given sentence so that it is mostly incorrect or misleading, but still loosely related to the original topic. Keep a small trace of the original meaning or context.
-  """,
-  """
-  [a4 - Contradictory]
-  Rewrite the given sentence so that it fundamentally contradicts or reverses the original meaning, while remaining on a related topic.
-  """
+  # a0
+  "Rewrite the sentence without changing its meaning, only rephrasing the words.",
+  # a1
+  "Rewrite the sentence with one subtle inaccuracy or omission, but keep it mostly correct.",
+  # a2
+  "Rewrite the sentence mixing truth and subtle errors, so it’s partly incorrect yet related.",
+  # a3
+  "Rewrite the sentence so that it’s mostly wrong, but still slightly connected to the original topic.",
+  # a4
+  "Rewrite the sentence to strongly contradict or undermine its original meaning while staying on the same topic."
 )
+
 
 
 def noise_pipeline(dataset: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
