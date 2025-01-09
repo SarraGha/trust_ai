@@ -85,13 +85,9 @@ if __name__ == "__main__":
 
     dataset = [
         {
-            "question": "What are the main causes of climate change?",
-            "ground_truth": "Climate change is primarily caused by human activities that increase the concentration of greenhouse gases in the atmosphere. The burning of fossil fuels (coal, oil, and natural gas) for energy and transportation is the largest contributor. Deforestation, industrial processes, and agricultural practices also release significant amounts of carbon dioxide, methane, and nitrous oxide, which trap heat in the atmosphere and lead to global warming.",
+            "question": "What was the Castlereagh–Canning duel?",
+            "ground_truth": "What was the Castlereagh–Canning duel?",
         },
-        {
-            "question": "What are the main functions of the human skeleton?",
-            "ground_truth" : "The human skeleton serves several critical functions. It provides structural support for the body, enabling movement by anchoring muscles. It protects vital organs, such as the brain (skull), heart, and lungs (ribcage). The skeleton also produces blood cells in the bone marrow, stores essential minerals like calcium and phosphorus, and helps regulate mineral balance in the body.",
-        }
 
 
     ]
