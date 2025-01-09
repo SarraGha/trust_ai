@@ -8,29 +8,45 @@ import ollama
 
 INSTRUCTIONS = (
   """
-  [a0 - Exact Rewording]
-  Paraphrase the given sentence to convey the same facts and meaning, just with different phrasing.
+  [Level a0 - Minimal noise]:
+  Rewrite the provided sentence to express the same idea in slightly different words while preserving the full accuracy, completeness, and meaning. Do not introduce any errors or omissions.
+  Example:
+  Original: "The goal of physics is to uncover universal laws, explain natural phenomena, unify knowledge, and make predictions about the physical world."
+  Rewritten: "The purpose of physics is to reveal universal principles, describe natural phenomena, integrate understanding, and predict outcomes in the physical world."
   """,
   """
-  [a1 - Minor Inaccuracy]
-  Paraphrase the sentence but introduce one small inaccuracy or leave out a minor detail, keeping it mostly true.
+  [Level a1 - Minor inaccuracy]:
+  Rewrite the sentence so that it remains mostly correct and retains its original purpose, but introduce one subtle inaccuracy or a small omission. Ensure the overall statement still closely aligns with the original meaning, but slightly reduces accuracy.
+  Example:
+  Original: "The goal of physics is to uncover universal laws, explain natural phenomena, unify knowledge, and make predictions about the physical world."
+  Rewritten: "The purpose of physics is to reveal universal principles, describe natural occurrences, and predict outcomes in the physical world."
+  (Here, the mention of 'unify knowledge' is omitted, slightly reducing completeness.)
   """,
   """
-  [a2 - Partial Misinformation]
-  Rewrite the sentence so that it contains a mix of correct and incorrect information. Stay on the same general topic, but distort some details.
+  [Level a2 - Mixed correctness and errors]:
+  Rewrite the sentence to blend correct information from the original with some incorrect or misleading details. The statement should still be recognizable and mostly on-topic, but contain multiple subtle errors or distortions.
+  Example:
+  Original: "The goal of physics is to uncover universal laws, explain natural phenomena, unify knowledge, and make predictions about the physical world."
+  Rewritten: "The purpose of physics is to reveal universal principles, describe unexpected phenomena, provide an unquestioned source of understanding, and anticipate possibilities in the physical realm."
+  (Here, phrases like 'unquestioned source of understanding' are misleading and overly confident, subtly distorting the meaning.)
   """,
   """
-  [a3 - Largely Incorrect]
-  Rewrite the sentence so that it is mostly wrong or misleading, yet still loosely connected to the original topic.
+  [Level a3 - Mostly incorrect with a kernel of truth]:
+  Rewrite the sentence so that most of the information is incorrect, misleading, or off-base, yet still loosely connected to the original topic. Include at least one small element that remains truthful or recognizable, but let the majority of the details be wrong in nuanced ways.
+  Example:
+  Original: "The goal of physics is to uncover universal laws, explain natural phenomena, unify knowledge, and make predictions about the physical world."
+  Rewritten: "The aim of physics is to uncover mysterious doctrines, interpret strange illusions, provide unquestionable beliefs, and foretell events in a distant, metaphysical universe."
+  (There’s a faint connection to seeking fundamental truths, but the rest is clearly off-topic or incorrect.)
   """,
   """
-  [a4 - Opposite Meaning]
-  Rewrite the sentence so that it contradicts the original meaning or presents a fundamentally altered and incorrect view, while remaining on a related subject.
+  [Level a4 - Contradictory or fundamentally incorrect]:
+  Rewrite the sentence so that it contradicts or undermines the original meaning in a nuanced but clear manner. The topic should still be related, but the core message should now be fundamentally altered or false.
+  Example:
+  Original: "The goal of physics is to uncover universal laws, explain natural phenomena, unify knowledge, and make predictions about the physical world."
+  Rewritten: "The purpose of physics is to reveal divine decrees, interpret mystical occurrences, consolidate faith-based wisdom, and predict outcomes in a supernatural cosmos."
+  (This version shifts from a scientific perspective to a religious/mystical one, effectively contradicting the original intent.)
   """
 )
-
-
-
 
 def noise_pipeline(dataset: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     client = ollama.Client("http://atlas1api.eurecom.fr:8019")
@@ -70,13 +86,14 @@ if __name__ == "__main__":
     dataset = [
         {
             "question": "What are the main causes of climate change?",
-            "ground_truth": "Climate change is primarily caused by human activities "
-                            "that increase the concentration of greenhouse gases in the atmosphere. "
-                            "The burning of fossil fuels (coal, oil, and natural gas) for energy and transportation "
-                            "is the largest contributor. Deforestation, industrial processes, and agricultural practices "
-                            "also release significant amounts of carbon dioxide, methane, and nitrous oxide, which trap "
-                            "heat in the atmosphere and lead to global warming.",
+            "ground_truth": "Climate change is primarily caused by human activities that increase the concentration of greenhouse gases in the atmosphere. The burning of fossil fuels (coal, oil, and natural gas) for energy and transportation is the largest contributor. Deforestation, industrial processes, and agricultural practices also release significant amounts of carbon dioxide, methane, and nitrous oxide, which trap heat in the atmosphere and lead to global warming.",
         },
+        {
+            "question": "What are the main functions of the human skeleton?",
+            "ground_truth" : "The human skeleton serves several critical functions. It provides structural support for the body, enabling movement by anchoring muscles. It protects vital organs, such as the brain (skull), heart, and lungs (ribcage). The skeleton also produces blood cells in the bone marrow, stores essential minerals like calcium and phosphorus, and helps regulate mineral balance in the body.",
+        }
+
+
     ]
 
     noise_dataset = noise_pipeline(dataset)
