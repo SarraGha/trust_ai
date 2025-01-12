@@ -41,11 +41,11 @@
     },
     {
         "question": "In what ways can we stop a fire?",
-        "ground_truth": "To start and propagate, a fire needs three elements: heat, fuel, and oxygen. Elimitating any of these three elements will effectively stop a fire. One can remove the fuel by cleaning the area with firebreaks (spaces cleared from vegetation), or by starting a controlled fire. Another way to stop a fire is by removing heat, typically done by pouring water and particularly effective for solid combustiles like wood or paper. The last way to stop a fire is by removing oxygen. This approach typically involve throwing at the fire materials like sand, dirt, or fire blankets."
+        "ground_truth": "To start and propagate, a fire needs three elements: heat, fuel, and oxygen. Eliminating any of these three elements will effectively stop a fire. One can remove the fuel by cleaning the area with firebreaks (spaces cleared from vegetation) or by starting a controlled fire. Another way to stop a fire is by removing heat, typically done by pouring water and particularly effective for solid combustibles like wood or paper. The last way to stop a fire is by removing oxygen. This approach typically involves throwing at the fire materials like sand, dirt, or fire blankets."
     },
     {
         "question": "What's the difference between a value function and an action-value function in reinforcement learning?",
-        "ground_truth": "In reinforcement learning, a value function V(s) estimates the expected return starting from state s and following a policy"
+        "ground_truth": "In reinforcement learning, a value function V(s) estimates the expected return starting from state s and following a policy \u03c0. The action-value function Q(s,a) instead estimates the expected return starting from state s, taking action a, and then following a policy \u03c0. The key difference is that V(s) evaluates states, while Q(s,a) evaluates state-action pairs."
     },
     {
         "question": "What was the Castlereagh\u2013Canning duel?",
@@ -60,20 +60,20 @@
         "ground_truth": "Let the tens digit be x and the ones digit be y. The number n can be written as n = 10x + y. From the problem statement, it follows that x = 3y and x + y = 12. If you substitute x = 3y into x + y = 12, we get that y = 3. Thus, x = 9. The final number n is 93."
     },
     {
-        "question": "What's the difference between Toism as religion and philosophy?",
-        "ground_truth": "Taoism as religion refers to organized practices, rituals, and institutions centered on the Tao, often involving priests, liturgies, and supernatural beliefs. It incorporates folk religious elements and is considered a \"liturgical framework\" for Chinese religion. Taoism as philosophy focuses on metaphysical and ethical teachings derived from texts like the Tao Te Ching and the Zhuangzi. It emphasizes harmony with the Tao, naturalism, and personal flourishing, often without invoking the supernatural. While historically distinct, modern scholars argue these categories overlap significantly, with Taoism combining religious and philosophical aspects into a unified, complex tradition."
+        "question": "What's the difference between Taoism as religion and philosophy?",
+        "ground_truth": "Taoism as religion refers to organized practices, rituals, and institutions centered on the Tao, often involving priests, liturgies, and supernatural beliefs. It incorporates folk religious elements and is considered a 'liturgical framework' for Chinese religion. Taoism as philosophy focuses on metaphysical and ethical teachings derived from texts like the Tao Te Ching and the Zhuangzi. It emphasizes harmony with the Tao, naturalism, and personal flourishing, often without invoking the supernatural. While historically distinct, modern scholars argue these categories overlap significantly, with Taoism combining religious and philosophical aspects into a unified, complex tradition."
     },
     {
-        "question": "Why did Michel Barnier's goverment faced a no confidence vote?",
-        "ground_truth": "In mid-October 2024, Barnier presented his government's proposal for the 2025 government budget to the National Assembly. Focused on reducing the budget deficit, the proposal included a wide range of austerity measures, including forty billion euros of spending cuts and twenty billions euros of tax increases. On 2 December, Barnier invoked Article 49.3 of the French Constitution in order to enact the budget proposal without a formal vote by the National Assembly. This meant that the only way to block the budget was for lawmakers to adopt a motion of no confidence in the government, pursuant to the provisions of the Article. The New Popular Front formally introduced such a motion later the same day. On 5 December 2024, the Barnier government in France headed by Michel Barnier of The Republicans collapsed following a successful vote of no confidence in the National Assembly."
+        "question": "Why did Michel Barnier's government face a no confidence vote?",
+        "ground_truth": "In mid-October 2024, Barnier presented his government's proposal for the 2025 government budget to the National Assembly. Focused on reducing the budget deficit, the proposal included a wide range of austerity measures, including forty billion euros of spending cuts and twenty billion euros of tax increases. On 2 December, Barnier invoked Article 49.3 of the French Constitution in order to enact the budget proposal without a formal vote by the National Assembly. This meant that the only way to block the budget was for lawmakers to adopt a motion of no confidence in the government, pursuant to the provisions of the Article. The New Popular Front formally introduced such a motion later the same day. On 5 December 2024, the Barnier government in France headed by Michel Barnier of The Republicans collapsed following a successful vote of no confidence in the National Assembly."
     },
     {
-        "question": "When does something becomes objective (as opposed to subjective)?",
-        "ground_truth": "Something becomes objective (as opposed to \"subjective\") as soon as we are convinced that it exists in the minds of others in the same form as it does in ours and that we can think about it and discuss it together. For example, the language of mathematics is so precise, it is ideally suited to defining concepts for which such a consensus exists. In certain ways, that is sufficient to provide us with a feeling of an objective existence, of a reality of mathematics."
+        "question": "When does something become objective (as opposed to subjective)?",
+        "ground_truth": "Something becomes objective (as opposed to 'subjective') as soon as we are convinced that it exists in the minds of others in the same form as it does in ours and that we can think about it and discuss it together. For example, the language of mathematics is so precise, it is ideally suited to defining concepts for which such a consensus exists. In certain ways, that is sufficient to provide us with a feeling of an objective existence, of a reality of mathematics."
     },
     {
         "question": "What was the Nazi rationale behind the Battle of the Atlantic?",
-        "ground_truth": "the Battle of the Atlantic involved a tonnage war, a military strategy aimed at sinking merchant ships more rapidly than the defender can replace them. As an island country, the United Kingdom is highly dependent on imported goods. In fact, Britain required more than a million tons of imported material per week to survive and fight. Thus, the idea was to steam the flow of merchant shipping that enabled Britain to keep fighting."
+        "ground_truth": "The Battle of the Atlantic involved a tonnage war, a military strategy aimed at sinking merchant ships more rapidly than the defender can replace them. As an island country, the United Kingdom is highly dependent on imported goods. In fact, Britain required more than a million tons of imported material per week to survive and fight. Thus, the idea was to stem the flow of merchant shipping that enabled Britain to keep fighting."
     },
     {
         "question": "What is the amount of oxygen and hydrogen that, once combined, produce water?",
