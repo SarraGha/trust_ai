@@ -96,7 +96,7 @@ The merged dataset will have the following structure:
    ]
 }
 ```
-## ⚠️ Testing Evaluation Directly
+## Testing Evaluation Directly
 It is possible to test the evaluation interface directly with the dataset available in this repository through this command : 
 ```bash
 python evaluation_interface.py evaluation_dataset.json
