@@ -12,6 +12,7 @@ This section includes scripts for generating an AI-generated dataset, merging AI
   - [Merging the Datasets](#merging-the-datasets)
   - [Launching the Evaluation Interface](#launching-the-evaluation-interface)
 - [Input and Output Formats](#input-and-output-formats)
+- [Testing Evaluation Directly](#testing-evaluation-directly)
 
 ## Requirements
 - Python 3.x
@@ -20,11 +21,11 @@ This section includes scripts for generating an AI-generated dataset, merging AI
 ## Usage
 ### Generating the Question-Ground Truth File
 ```bash
-python extract.py -i <input_file.txt> -o <output_file.json>
+python extract.py -i <input_file.json> -o <output_file.json>
 ```
 Example:
 ```bash
-python extract.py -i dataset.txt -o question_groundTruth_dataset.json
+python extract.py -i human_dataset.json -o question_groundTruth_dataset.json
 ```
 ### enerating the AI-Generated Dataset
 ```bash
@@ -95,5 +96,11 @@ The merged dataset will have the following structure:
    ]
 }
 ```
+## ⚠️ Testing Evaluation Directly
+It is possible to test the evaluation interface directly with the dataset available in this repository through this command : 
+```bash
+python evaluation_interface.py evaluation_dataset.json
+```
+
 
 
