@@ -1,9 +1,17 @@
 import gradio as gr
 import json
 import random
+import argparse
+
+# Set up argument parser
+parser = argparse.ArgumentParser(description='Launch the evaluation interface with a specified dataset.')
+parser.add_argument('input_file', type=str, help='Path to the evaluation dataset JSON file')
+
+# Parse the arguments
+args = parser.parse_args()
 
 # Load the dataset
-with open('evaluation_dataset.json') as f:
+with open(args.input_file) as f:
     data = json.load(f)
 
 # Store evaluation state
