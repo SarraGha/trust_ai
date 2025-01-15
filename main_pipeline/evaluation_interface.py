@@ -35,7 +35,8 @@ def evaluate_responses(*selected_answers):
         results[question_id] = []
         for level in range(5):
             selected = selected_answers[index]
-            results[question_id].append({"level": level, "selected": selected})
+            response_type = "Human" if selected == "Response 1" else "AI" if selected == "Response 2" else "Both" if selected == "Both are good" else "Neither"
+            results[question_id].append({"level": level, "selected": selected, "response_type": response_type})
             question_status[question_id][level] = selected is not None
             index += 1
     # Save results to a JSON file
