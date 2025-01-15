@@ -7,36 +7,43 @@ from typing import Dict, Any, List
 import ollama
 
 INSTRUCTIONS = (
- """
- [Level a0 - Minimal noise]:
- Rewrite the provided sentence to express the same idea in slightly different words while preserving the full accuracy, completeness, and meaning. Do not introduce any errors or omissions.
- """,
- """
- [Level a1 - Minor inaccuracy]:
- Rewrite the sentence so that it remains mostly correct and retains its original purpose, but introduce one subtle inaccuracy or a small omission.
- """,
- """
- [Level a2 - Mixed correctness and errors ]:
- **Randomly select at least one** from the following “noise" types to introduce, but keep the sentence mostly on-topic:
- 1. **Minor incorrectness**: Introduce small factual or contextual errors.
- 2. **Slight contradiction**: Contradict a minor detail or nuance in the original.
- 3. **Omission**: Omit a portion of the original meaning.
- """,
- """
- [Level a3 - Mostly incorrect with a kernel of truth ]:
- **Randomly select at least two** from the following “noise” types:
- 1. **Medium or multiple incorrectnesses**: Introduce more obvious factual errors.
- 2. **Partial contradiction**: Contradict a bigger chunk of the original meaning.
- 3. **Omission**: Omit significant but not all parts of the original idea.
- """,
- """
- [Level a4 - Contradictory or fundamentally incorrect]:
- **Randomly select two or three** of the following “noise” types:
- 1. **Significant incorrectness**: Replace core details with blatantly wrong or nonsensical information.
- 2. **Direct contradiction**: Undermine the fundamental meaning of the original.
- 3. **Major omission or twisted context**: Remove critical content or wildly shift the context.
- """
+    """
+    [Level a0 - Minimal noise]:
+    Rewrite the provided sentence to express the same idea in slightly different words while preserving full accuracy, completeness, and meaning. Ensure the content remains faithful to the original and includes all key details.
+    Example:
+    Original: "To start and propagate, a fire needs three elements: heat, fuel, and oxygen. Eliminating any of these three elements will effectively stop a fire. One can remove the fuel by cleaning the area with firebreaks (spaces cleared from vegetation), or by starting a controlled fire. Another way to stop a fire is by removing heat, typically done by pouring water and particularly effective for solid combustibles like wood or paper. The last way to stop a fire is by removing oxygen. This approach typically involves throwing at the fire materials like sand, dirt, or fire blankets."
+    Rewritten: "A fire requires three key elements to ignite and spread: heat, fuel, and oxygen. Removing any of these elements can effectively extinguish a fire. One method involves eliminating the fuel, which can be done by creating firebreaks—areas cleared of vegetation—or by starting a controlled fire. Another approach is to remove the heat, typically by applying water, which is especially effective for solid fuels like wood or paper. Finally, removing oxygen is another way to stop a fire, which is often achieved by covering it with materials like sand, dirt, or fire blankets."
+    """,
+    """
+    [Level a1 - Minor inaccuracy]:
+    Rewrite the sentence so that it remains mostly correct and retains its original purpose but introduces one small omission, inaccuracy, or phrasing that subtly shifts the emphasis. Ensure the overall statement is still recognizable and logical.
+    Example:
+    Original: "To start and propagate, a fire needs three elements: heat, fuel, and oxygen. Eliminating any of these three elements will effectively stop a fire. One can remove the fuel by cleaning the area with firebreaks (spaces cleared from vegetation), or by starting a controlled fire. Another way to stop a fire is by removing heat, typically done by pouring water and particularly effective for solid combustibles like wood or paper. The last way to stop a fire is by removing oxygen. This approach typically involves throwing at the fire materials like sand, dirt, or fire blankets."
+    Rewritten: "A fire requires three key elements to ignite and spread: heat, fuel, and air. Removing any of these elements can effectively extinguish a fire. One method involves eliminating the fuel, which can be done by creating firebreaks—areas cleared of vegetation—or by starting a controlled fire. Another approach is to remove the heat, typically by applying water, which is especially effective for solid fuels like wood or paper. Finally, removing air is another way to stop a fire, which is often achieved by covering it with materials like sand, dirt, or fire blankets."
+    """,
+    """
+    [Level a2 - Mixed correctness and errors]:
+    Rewrite the sentence to combine mostly accurate information with subtle distortions or small inaccuracies. Introduce details that could mislead or create minor confusion.
+    Example:
+    Original: "To start and propagate, a fire needs three elements: heat, fuel, and oxygen. Eliminating any of these three elements will effectively stop a fire. One can remove the fuel by cleaning the area with firebreaks (spaces cleared from vegetation), or by starting a controlled fire. Another way to stop a fire is by removing heat, typically done by pouring water and particularly effective for solid combustibles like wood or paper. The last way to stop a fire is by removing oxygen. This approach typically involves throwing at the fire materials like sand, dirt, or fire blankets."
+    Rewritten: "A fire requires three key elements to ignite and spread: heat, wood, and air. Removing any of these elements can effectively extinguish a fire. One method involves eliminating the wood, which can be done by clearing regions of risk from vegetation. Another approach is to remove the heat, typically by applying water, which is especially effective for solid fuels like wood or paper. Finally, removing air is another way to stop a fire, which is often achieved by covering it with materials like sand, dirt, or fire blankets."
+    """,
+    """
+    [Level a3 - Distorted Information]:
+    Rewrite the sentence so that most of the information is incorrect, misleading, or distorted while maintaining a faint connection to the original topic. Include at least two elements that reflect a recognizable truth.
+    Example:
+    Original: "To start and propagate, a fire needs three elements: heat, fuel, and oxygen. Eliminating any of these three elements will effectively stop a fire. One can remove the fuel by cleaning the area with firebreaks (spaces cleared from vegetation), or by starting a controlled fire. Another way to stop a fire is by removing heat, typically done by pouring water and particularly effective for solid combustibles like wood or paper. The last way to stop a fire is by removing oxygen. This approach typically involves throwing at the fire materials like sand, dirt, or fire blankets."
+    Rewritten: "A fire requires three key elements to ignite and spread: heat, wood, and air. Removing any of these elements can effectively extinguish a fire. One method involves eliminating the wood, which can be done by clearing regions of risk from vegetation. Another approach is to remove the heat, typically by applying water, which is especially effective for liquid fuels like gasoline or oil. Finally, removing air is another way to stop a fire, which is often achieved by covering it with materials like sand, dirt, or fire blankets."
+    """,
+    """
+    [Level a4 - Fundamentally incorrect and Fabricated Information]:
+    Rewrite the sentence so that it fundamentally misrepresents the event by introducing fabricated or non-existent details. Ensure the topic appears related, but alter the intent or core message to render it fundamentally inaccurate.
+    Example:
+    Original: "To start and propagate, a fire needs three elements: heat, fuel, and oxygen. Eliminating any of these three elements will effectively stop a fire. One can remove the fuel by cleaning the area with firebreaks (spaces cleared from vegetation), or by starting a controlled fire. Another way to stop a fire is by removing heat, typically done by pouring water and particularly effective for solid combustibles like wood or paper. The last way to stop a fire is by removing oxygen. This approach typically involves throwing at the fire materials like sand, dirt, or fire blankets."
+    Rewritten: "A fire requires three key elements to ignite and spread: fire, wood, and air. Removing any of these elements may extinguish a fire. One method involves eliminating the wood, which can be done by cutting down trees. Another approach is to remove the original fire by throwing water at it. Finally, removing air is another way to stop a fire, but this is very hard to achieve since living organisms need it for living."
+    """
 )
+
 
 def load_dataset(file_path: pathlib.Path) -> List[Dict[str, Any]]:
     with open(file_path, "r") as f:
