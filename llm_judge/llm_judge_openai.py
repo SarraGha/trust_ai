@@ -73,7 +73,7 @@ def evaluate_answer(question, ground_truth, generated_answer):
 
 def main():
     # Load the dataset from the specified JSON file
-    dataset_file_path = 'ai_generated_dataset_openai.json'  # Change this to your actual file path
+    dataset_file_path = '../main_pipeline/ai_generated_dataset_openai.json'  # Change this to your actual file path
     dataset = load_dataset(dataset_file_path)
 
     results = []
@@ -96,7 +96,7 @@ def main():
             })
 
     # Define output file path
-    output_file_path = 'evaluation_results_llm_new_prompt.json'
+    output_file_path = '../main_pipeline/evaluation_results_llm_new_prompt.json'
 
     # Write results to a JSON file
     with open(output_file_path, 'w') as f:
