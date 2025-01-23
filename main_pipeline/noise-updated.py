@@ -4,20 +4,39 @@ import json
 import pathlib
 import random
 import math
+import os
+import openai
 import ollama
+from fontTools.ttLib.tables.ttProgram import instructions
 
-def generate_response(client, prompt):
+# Retrieve the OpenAI API key from environment variables
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
+def generate_response_openai(prompt):
+    """
+    Calls the OpenAI ChatCompletion endpoint and returns the response text.
+    """
+    response = openai.ChatCompletion.create(
+        model="gpt-4",
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": prompt}
+        ]
+    )
+    return response["choices"][0]["message"]["content"].strip()
+
+def generate_response_ollama(client, prompt, instructions):
     """
     Calls the Ollama API and returns the response text.
     """
     response = client.chat(
         "mistral-nemo:12b-instruct-2407-fp16",
         messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "system", "content": instructions},
             {"role": "user", "content": prompt}
         ]
     )
-    return response["message"]["content"].strip()
+    return response["message"]["content"].strip().replace("\"","")
 
 def generate_a0(client, ground_truth):
     prompt = (
@@ -27,7 +46,7 @@ def generate_a0(client, ground_truth):
         f"Original:\n\"{ground_truth}\"\n\n"
         "Paraphrased version:"
     )
-    return generate_response(client, prompt)
+    return generate_response_ollama(client, prompt, "You are a helpful assistant")
 
 def bracket_and_list_factual_data(client, a0_text):
     prompt = (
@@ -37,7 +56,7 @@ def bracket_and_list_factual_data(client, a0_text):
         f"Text:\n\"{a0_text}\"\n\n"
         "Output ONLY the JSON array, no extra text."
     )
-    response_text = generate_response(client, prompt)
+    response_text = generate_response_ollama(client, prompt, "You are a helpful assistant")
 
     try:
         factual_data_list = json.loads(response_text)
@@ -53,24 +72,12 @@ def generate_noisy_version(client, a0_text, items_to_change):
 
     bracketed_items_str = ", ".join(items_to_change)
     print(f"Items to change: {bracketed_items_str}")
-
+    promptInstructions=pathlib.Path("prompt_test.txt").read_text()
     prompt = (
-        "You must ONLY modify the following bracketed items in the original text, making them slightly incorrect "
-        "or omitting them entirely, but always in a realistic and serious manner (no fantasy or humorous content). "
-        "All other parts of the text MUST remain unchanged. "
-        "Retain the same sentence structure, punctuation, and style wherever possible. "
-        "If a bracketed element is a date, change it to a close/near date (e.g., 1809 -> 1810). "
-        "If it's a location, substitute it with a plausible alternative in the same era. "
-        "If it's a name, role, or numeric value, change it to something similar but not identical. "
-        "Remove square brackets [ ] from any changed words.\n\n"
-        "Original text:\n"
-        f"{a0_text}\n\n"
-        "Items to subtly change:\n"
-        f"{bracketed_items_str}\n\n"
-        "Now produce the final text with only these realistic, minimal changes:"
+        f"```\n{a0_text}\n```\nItems to change: {items_to_change}\nOUTPUT: "
     )
 
-    noisy_text = generate_response(client, prompt)
+    noisy_text = generate_response_ollama(client, prompt, promptInstructions)
     return noisy_text.strip()
 
 def main_pipeline(data):

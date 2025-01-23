@@ -1,12 +1,6 @@
-# Import necessary libraries
 import os
 import json
-import requests  # Use requests for API calls
-from ragas import evaluate, EvaluationDataset
-from ragas.metrics import AnswerCorrectness
-
-# Print the current working directory for debugging purposes
-print("Current Working Directory:", os.getcwd())
+import requests
 
 # Load OpenAI API key from environment variable
 openai_key = os.getenv('OPENAI_API_KEY')
@@ -15,12 +9,16 @@ openai_key = os.getenv('OPENAI_API_KEY')
 if openai_key is None:
     raise ValueError("OpenAI API key not set. Please set the OPENAI_API_KEY environment variable.")
 
-# Load the gold dataset from a JSON file containing questions and answers
-with open('evaluation_dataset.json', 'r') as f:
-    gold_dataset = json.load(f)
+# Load the dataset from a JSON file
+def load_dataset(file_path):
+    print(f"Loading dataset from {file_path}...")
+    with open(file_path, 'r') as f:
+        data = json.load(f)
+    print(f"Loaded {len(data)} entries from the dataset.")
+    return data
 
-
-def evaluate_answer(question, ground_truth, human_answer, ai_answer):
+# Function to evaluate each answer
+def evaluate_answer(question, ground_truth, generated_answer):
     url = "https://api.openai.com/v1/chat/completions"
     headers = {
         "Authorization": f"Bearer {openai_key}",
@@ -34,16 +32,24 @@ def evaluate_answer(question, ground_truth, human_answer, ai_answer):
             {
                 "role": "user",
                 "content": f"""
-                Evaluate the following answers to the question: "{question}"
+                ### The instruction to evaluate:
+                {question}
 
-                Ground Truth: {ground_truth}
+                ### Response to evaluate:
+                {generated_answer}
 
-                Human Answer: {human_answer}
+                ### Reference Answer (Score 5):
+                {ground_truth}
 
-                AI Answer: {ai_answer}
+                ### Score Rubrics:
+                [Are the model's responses factually correct and well-supported by evidence?]
+                Score 1: The model's responses are mostly incorrect or based on unfounded information.
+                Score 2: The model sometimes provides factually correct responses, but inaccuracies are common.
+                Score 3: The model generally provides factually correct information, though some errors occur.
+                Score 4: The model often provides factually accurate information with only occasional minor errors.
+                Score 5: The model consistently provides responses that are factually correct and well-supported by evidence.
 
-                Please rate the human and AI answers on a scale from 1 to 10 based on their accuracy and relevance to the ground truth. 
-                Provide a brief explanation for your ratings.
+                ### Please provide a score (1-5) and feedback based on the above criteria:
                 """
             }
         ],
@@ -51,46 +57,52 @@ def evaluate_answer(question, ground_truth, human_answer, ai_answer):
     }
 
     # Make the POST request to the OpenAI API
+    print(f"Evaluating answer: {generated_answer[:30]}...")  # Print the start of the answer for context
     response = requests.post(url, headers=headers, json=payload)
 
     # Check if the response is successful
     if response.status_code == 200:
         # Extract the evaluation from the response
         evaluation = response.json()['choices'][0]['message']['content']
+        print("Evaluation received successfully.")
         return evaluation
     else:
         # Print error details and return a message in case of failure
         print(f"Error: {response.status_code}, {response.text}")
         return "Error in evaluation"  # Fallback message
 
-
 def main():
+    # Load the dataset from the specified JSON file
+    dataset_file_path = 'ai_generated_dataset_openai.json'  # Change this to your actual file path
+    dataset = load_dataset(dataset_file_path)
+
     results = []
 
-    for question in gold_dataset['questions']:
-        question_id = question['id']
-        question_text = question['question']
-        ground_truth = question['ground_truth']
-        answers = question['answers']
+    # Iterate through each question in the dataset
+    for entry in dataset:
+        question_text = entry['question']
+        ground_truth = entry['ground_truth']
+        answers = entry['answers']
 
+        print(f"Processing question: {question_text}")  # Print the current question being processed
+
+        # Evaluate each answer
         for answer_key, answer in answers.items():
-            human_answer = answer['human']
-            ai_answer = answer['ai']
-
-            evaluation = evaluate_answer(question_text, ground_truth, human_answer, ai_answer)
+            evaluation = evaluate_answer(question_text, ground_truth, answer)
             results.append({
-                "question_id": question_id,
+                "question": question_text,
                 "answer_key": answer_key,
                 "evaluation": evaluation
             })
 
-    # Print results
-    for result in results:
-        print(f"Question ID: {result['question_id']}, Answer Key: {result['answer_key']}")
-        print("Evaluation:")
-        print(result['evaluation'])
-        print("\n" + "=" * 50 + "\n")
+    # Define output file path
+    output_file_path = 'evaluation_results_llm_new_prompt.json'
 
+    # Write results to a JSON file
+    with open(output_file_path, 'w') as f:
+        json.dump(results, f, indent=4)
+
+    print(f"Evaluation results saved to {output_file_path}.")
 
 if __name__ == "__main__":
     main()

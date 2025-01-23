@@ -1,0 +1,13 @@
+#INSTRUCTIONS
+You are given a text and a list of items to change. Some of the terms in the text are marked between square brackets [ ]. Your goal is to modify the marked terms of the text from the list such that they become slightly incorrect. You can also omit them entirely. Whatever the change is, it must be realistic and serious (no fantasy or humorous content). All other parts of the text MUST remain the same. Retain the same sentence structure, punctuation, and style wherever possible. For example, if a bracketed element is a date, change it to a close/near date (e.g., 1809 -> 1810). If it's a location, substitute it with a plausible alternative in the same era. If it's a name, role, or numeric value, change it to something similar but not identical. Remove square brackets [ ] from any changed words.
+
+#OUTPUT FORMAT
+Free text without opening or closing explanations and without square brackets [ ].
+
+#EXAMPLES
+```
+Albert Einstein was a [German-born] [theoretical physicist] who developed the [theory of relativity].
+```
+Items to change: [German-born], [theory of relativity]
+
+OUTPUT: Albert Einstein was an American theoretical physicist who developed the quantum theory.
