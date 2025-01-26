@@ -27,13 +27,13 @@ Example:
 ```bash
 python extract.py -i human_dataset.json -o question_groundTruth_dataset.json
 ```
-### enerating the AI-Generated Dataset
+### Generating the AI-Generated Dataset
 ```bash
-python noise.py -i <input_file.json> -o <output_file.json>
+python noise_pipeline.py -i <input_file.json> -o <output_file.json>
 ```
 Example:
 ```bash
-python noise.py -i question_groundTruth_dataset.json -o noise.json
+python noise_pipeline.py -i question_groundTruth_dataset.json -o noise.json
 ```
 ### Merging the Datasets
 ```bash
