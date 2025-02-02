@@ -21,14 +21,6 @@ def load_scores(filename):
 
     return scores
 
-# Function to calculate the mean of a list, ignoring None values
-def safe_mean(values):
-    """
-    Calculate the mean of a list, ignoring None values.
-    Returns None if all values are None.
-    """
-    filtered_values = [v for v in values if v is not None]
-    return np.mean(filtered_values) if filtered_values else None
 
 # Function to evaluate a single metric and plot results
 def evaluate_single_metric(real_noise, predicted_values, metric_name):
@@ -62,25 +54,58 @@ def evaluate_single_metric(real_noise, predicted_values, metric_name):
 
     print(f"Pearson Correlation for {metric_name}: {corr:.2f}")
 
-# Load scores from JSON files
-scores_mistral = load_scores('evaluation_results_ollama_mistral.json')
-scores_llama3 = load_scores('evaluation_results_ollama_llama3.json')
-scores_openai = load_scores('evaluation_results_openai.json')
-scores_prometheus = load_scores('evaluation_results_ollama_prometheus.json')
 
-# Prepare noise levels and align scores
-noise_levels = ['A0', 'A1', 'A2', 'A3', 'A4']
-real_noise = [safe_mean(scores_mistral[level]) for level in noise_levels]
-llama3_scores = [safe_mean(scores_llama3[level]) for level in noise_levels]
-openai_scores = [safe_mean(scores_openai[level]) for level in noise_levels]
-prometheus_scores = [safe_mean(scores_prometheus[level]) for level in noise_levels]
+if __name__=="__main__":
+    # Load scores from JSON files
+    scores_mistral = load_scores('evaluation_results_ollama_mistral.json')
+    scores_llama3 = load_scores('evaluation_results_ollama_llama3.json')
+    scores_openai = load_scores('evaluation_results_openai.json')
+    scores_prometheus = load_scores('evaluation_results_ollama_prometheus.json')
 
-# Filter out None values to ensure alignment for plotting and correlation
-def filter_valid_scores(real, pred):
-    return zip(*[(r, p) for r, p in zip(real, pred) if r is not None and p is not None])
+    # Prepare noise levels and align scores
+    noise_levels = ['A0', 'A1', 'A2', 'A3', 'A4']
+    d = {"A0": 5, "A1": 4, "A2": 3, "A3": 2, "A4": 1}
 
-# Evaluate and plot each metric
-for metric_scores, metric_name in zip([llama3_scores, openai_scores, prometheus_scores, real_noise],
-                                      ["Llama3", "OpenAI", "Prometheus", "Mistral"]):
-    valid_real, valid_pred = filter_valid_scores(real_noise, metric_scores)
-    evaluate_single_metric(valid_real, valid_pred, metric_name)
+    # Mistral Nemo pearson evaluation
+    output_mistral = []
+    for l in noise_levels:
+        for s in scores_mistral[l]:
+            if s is not None:
+                output_mistral.append((s, d[l]))
+
+    output_mistral = np.array(output_mistral)
+    output_mistral += np.random.normal(loc=0, scale=0.15, size=output_mistral.shape)
+    evaluate_single_metric([o[1] for o in output_mistral], [o[0] for o in output_mistral], "Mistral-Nemo")
+
+    # Llama3.3 pearson evaluation
+    output_llama = []
+    for l in noise_levels:
+        for s in scores_llama3[l]:
+            if s is not None:
+                output_llama.append((s, d[l]))
+
+    output_llama = np.array(output_llama)
+    output_llama += np.random.normal(loc=0, scale=0.15, size=output_llama.shape)
+    evaluate_single_metric([o[1] for o in output_llama], [o[0] for o in output_llama], "Llama 3.3")
+
+    # GPT4o pearson evaluation
+    output_gpt4o = []
+    for l in noise_levels:
+        for s in scores_openai[l]:
+            if s is not None:
+                output_gpt4o.append((s, d[l]))
+
+    output_gpt4o = np.array(output_gpt4o)
+    output_gpt4o += np.random.normal(loc=0, scale=0.15, size=output_gpt4o.shape)
+    evaluate_single_metric([o[1] for o in output_gpt4o], [o[0] for o in output_gpt4o], "GPT4o")
+
+    # Prometheus pearson evaluation
+    output_prometheus = []
+    for l in noise_levels:
+        for s in scores_prometheus[l]:
+            if s is not None:
+                output_prometheus.append((s, d[l]))
+
+    output_prometheus = np.array(output_prometheus)
+    output_prometheus += np.random.normal(loc=0, scale=0.15, size=output_prometheus.shape)
+    evaluate_single_metric([o[1] for o in output_prometheus], [o[0] for o in output_prometheus], "Prometheus")

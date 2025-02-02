@@ -56,6 +56,7 @@ def create_interface():
     inputs = []  # List to collect Radio components
     with gr.Blocks() as interface:
         gr.Markdown("## Evaluation Interface: Human vs AI Responses")
+        gr.Markdown("##### Theaim of the evaulation is ")
         progress_summary = gr.Textbox(value=update_progress([]), label="Progress Summary", interactive=False)
 
         for question_index, question in enumerate(questions):
