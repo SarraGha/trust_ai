@@ -1,149 +1,296 @@
 # -*- coding: utf-8 -*-
+import abc
 import argparse
 import json
+import math
 import pathlib
 import random
-import math
 import re
-import ollama
+from typing import List, Dict, Optional, Tuple
 
-def generate_response_ollama(client, prompt, instructions):
-    """
-    Calls the Ollama API and returns the response text.
-    """
-    response = client.chat(
-        "llama3.3:70b",
-        messages=[
-            {"role": "system", "content": instructions},
-            {"role": "user", "content": prompt}
-        ]
-    )
-    return response["message"]["content"].strip().replace("\"", "")
+import pydantic
+from openai import OpenAI
+from tqdm import tqdm
 
-def generate_a0(client, ground_truth):
+
+class LLM:
+
+    def __init__(self, client: OpenAI):
+        self._client = client
+
+    def query(self, messages: List[Dict[str, str]]) -> str:
+        completion = self._client.chat.completions.create(model="gpt-4o", messages=messages)
+        return completion.choices[0].message.content.strip()
+
+
+class Sample(pydantic.BaseModel):
+    question: Optional[str] = None
+    ground_truth: Optional[str] = None
+    raw_factual_data: Optional[List[str]] = {}
+    with_brackets: Dict[str, str] = {}
+    blacklisted: Optional[List[str]] = None
+    factual_data: Optional[List[str]] = None
+    answers: Dict[str, str] = {}
+
+    def is_initialized(self) -> bool:
+        return (
+                self.question is not None and
+                self.ground_truth is not None and
+                "A0" in self.answers.keys() and
+                self.with_brackets and
+                self.raw_factual_data is not None and
+                len(self.raw_factual_data) > 0
+        )
+
+    def is_valid(self) -> bool:
+        return (
+                self.question is not None and
+                self.ground_truth is not None and
+                self.with_brackets and
+                self.raw_factual_data is not None and
+                len(self.raw_factual_data) > 0 and
+                self.blacklisted is not None and
+                self.factual_data is not None and
+                len(self.factual_data) > 0 and
+                self.answers.keys() == {"A0", "A1", "A2", "A3", "A4"}
+        )
+
+
+class Tracker(pydantic.BaseModel):
+    input_samples: int = 0
+    find_factual_data_error: int = 0
+    output_samples: int = 0
+
+
+class Item(pydantic.BaseModel):
+    id: int
+    question: str
+    ground_truth: str
+    answers: Dict[str, str]
+
+    @classmethod
+    def from_sample(cls, id_: int, sample: Sample) -> 'Item':
+        return Item(id=id_, question=sample.question, ground_truth=sample.ground_truth, answers=sample.answers)
+
+
+class Dataset(pydantic.BaseModel):
+    questions: List[Item]
+
+
+class Report(pydantic.BaseModel):
+    report: Tracker
+    questions: List[Sample]
+
+    def to_dataset(self) -> Dataset:
+        items = [Item.from_sample(id_=i, sample=s) for i, s in enumerate(self.questions) if s.is_valid()]
+        return Dataset(questions=items)
+
+
+class Step(abc.ABC):
+
+    @abc.abstractmethod
+    def step(self, sample: Sample, tracker: Tracker) -> None:
+        ...
+
+
+class Reader(abc.ABC):
+    @abc.abstractmethod
+    def samples(self) -> List[Sample]:
+        ...
+
+
+class JsonReader(Reader):
+
+    def __init__(self, input_file: pathlib.Path):
+        self._input_file = input_file
+
+    def samples(self) -> List[Sample]:
+        with open(self._input_file, "r") as f:
+            content = f.read()
+
+        gold_dataset = json.loads(content)
+        return [Sample(question=d["question"], ground_truth=d["ground_truth"]) for d in gold_dataset]
+
+
+class Pipeline:
+
+    def __init__(self):
+        self._steps: List[Step] = []
+
+    def with_step(self, step: Step) -> 'Pipeline':
+        self._steps.append(step)
+        return self
+
+    def run(self, reader: Reader) -> Tuple[List[Sample], Tracker]:
+        tracker = Tracker()
+        collected = []
+        for sample in tqdm(reader.samples(), desc="Samples:"):
+            tracker.input_samples += 1
+            for step in self._steps:
+                step.step(sample, tracker)
+            collected.append(sample)
+            if sample.is_valid():
+                tracker.output_samples += 1
+        return tracker
+
+
+class ParaphraseStep(Step):
     prompt = (
         "Rewrite the provided sentence to express the same idea in slightly different words while preserving "
         "full accuracy, completeness, and meaning. Ensure the content remains faithful to the original and includes "
         "all key details. Do not add any note.\n\n"
-        f"Original:\n\"{ground_truth}\"\n\n"
+        "Original:\n{ground_truth}\n\n"
         "Paraphrased version:"
     )
-    return generate_response_ollama(client, prompt, "You are a helpful assistant")
 
-def bracket_and_list_factual_data(client, a0_text):
+    def __init__(self, llm: LLM):
+        self._llm = llm
+
+    def step(self, sample: Sample, tracker: Tracker) -> None:
+        assert sample.ground_truth is not None
+        prompt = self.prompt.format(ground_truth=sample.ground_truth)
+        paraphrased = self._llm.query([{"role": "user", "content": prompt}])
+        sample.answers["A0"] = paraphrased
+
+
+class FactualDataStep(Step):
     prompt = (
-        "Take the following text and put each piece of factual data between square brackets. "
-        "Then return ONLY a JSON array of these bracketed items. Example output:\n"
-        "[\"[Fuel]\", \"[1983]\", \"[Mr. John Colman]\"]\n\n"
-        f"Text:\n\"{a0_text}\"\n\n"
-        "Output ONLY the JSON array, no extra text."
+        "Given a text extract, place a factual data between brackets [ ]. \n"
+        "A fact is a piece of information that is objectively true, measurable, or verifiable. This includes:\n"
+        "- Dates (e.g., [July 29th], [1991])\n"
+        "- Names of people, places, and organizations (e.g., [Greek], [Pepsi])\n"
+        "- Scientific and technical terms (e.g., [greenhouse gases])\n"
+        "- Numerical data or direct measurements (e.g., [20%], [one third])\n"
+        "- Objective actions and events that have clear historical, scientific, or legal verification "
+        "(e.g., [discovered], [signed into law])\n"
+        "- Well-established causal relationships, meaning causes or major contributors that are widely accepted "
+        "and backed by evidence (e.g., [Deforestation] contributes to [habitat loss])\n"
+        "This excludes opinions, interpretations, or vague descriptions.\n"
+        "Example: \n"
+        "Input: On September 6, 1609, only five days after the arrival of the first Dutch and English "
+        "sailors, John Colman was reportedly killed by attacking Native Americans by an arrow to his neck."
+        "\n"
+        "Output: On [September 6], [1609], only [five days] after the arrival of the first [Dutch] and [English] "
+        "[sailors], John Colman was [killed by] attacking [Native Americans] [by an arrow] to his [neck]."
+        "\n\n"
+        "Output a text with brackets around factual data with no extra annotations, formatting, or comments."
+        "\n\n"
+        "Input: {a0_text}"
+        "\n"
+        "Output: "
     )
-    response_text = generate_response_ollama(client, prompt, "You are a helpful assistant")
 
-    # Attempt to parse the response as JSON
-    try:
-        # If the response is a list of lists, flatten it
-        if response_text.startswith("[[") and response_text.endswith("]]"):
-            # Remove the outer brackets and split by comma
-            response_text = response_text[1:-1]
-            # Flatten the list and ensure each item is formatted correctly
-            factual_data_list = [f"[{item.strip().strip('[]')}]"
-                                 for item in response_text.split("], [")]
-        else:
-            factual_data_list = json.loads(response_text)
-    except json.JSONDecodeError:
-        print("WARNING: Could not parse JSON from model. Response was:", response_text)
-        factual_data_list = []
+    def __init__(self, llm: LLM):
+        self._llm = llm
 
-    return factual_data_list
+    def step(self, sample: Sample, tracker: Tracker) -> None:
+        assert "A0" in sample.answers.keys()
+        prompt = self.prompt.format(a0_text=sample.answers["A0"])
 
-def filter_factual_data_by_question(factual_data, question):
+        response_text = self._llm.query([{"role": "user", "content": prompt}])
+        sample.with_brackets["A0"] = response_text
+
+        matches = re.findall(r"\[(.*?)]", response_text)
+        if not matches:
+            tracker.find_factual_data_error += 1
+            return
+
+        sample.raw_factual_data = matches
+
+        cleaned = re.sub(r'\[(.*?)]', r'\1', response_text)
+        sample.answers["A0"] = cleaned
+
+
+class FilterItemsFromQuestionStep(Step):
     """
     Filters out any factual item that has overlapping words with the question.
     If any token in the bracketed item appears in the question, we skip that item.
     """
-    filtered_data = []
 
-    # Simple tokenization of the question
-    # (strip punctuation, lowercase, then split on whitespace)
-    question_tokens = set(re.findall(r"\w+", question.lower()))
+    def step(self, sample: Sample, tracker: Tracker) -> None:
+        if not sample.is_initialized():
+            return
 
-    for item in factual_data:
-        # Remove brackets and tokenize the item
-        # e.g. "[1809]" -> "1809" -> tokens ["1809"]
-        item_text = item.replace("[", "").replace("]", "")
-        item_tokens = set(re.findall(r"\w+", item_text.lower()))
+        assert sample.question is not None
+        assert sample.raw_factual_data is not None
+        assert len(sample.raw_factual_data) > 0
 
-        # If there's NO overlap, keep it
-        if question_tokens.isdisjoint(item_tokens):
-            filtered_data.append(item)
+        # Simple tokenization of the question
+        # (strip punctuation, lowercase, then split on whitespace)
+        question_words = set(re.findall(r"\w+", sample.question.lower()))
+        sample.blacklisted = [
+            term.lower() for term in sample.raw_factual_data
+            if any(word.lower() in question_words for word in term.split())
+        ]
+        sample.factual_data = [i for i in sample.raw_factual_data if i.lower() not in sample.blacklisted]
 
-    return filtered_data
 
-def generate_noisy_version(client, a0_text, items_to_change):
-    if not items_to_change:
-        return a0_text  # no changes
+class CreateNoiseExamplesStep(Step):
 
-    bracketed_items_str = ", ".join(items_to_change)
-    print(f"Items to change: {bracketed_items_str}")
-    promptInstructions = pathlib.Path("prompt.txt").read_text()
-    prompt = (
-        f"```\n{a0_text}\n```\nItems to change: {items_to_change}\nOUTPUT: "
-    )
+    def __init__(self, llm: LLM):
+        self._llm = llm
+        self._prompt = pathlib.Path("prompt.txt").read_text()
+        self._levels = 4
 
-    noisy_text = generate_response_ollama(client, prompt, promptInstructions)
-    return noisy_text.strip()
+    def step(self, sample: Sample, tracker: Tracker) -> None:
+        if not sample.is_initialized():
+            return
 
-def main_pipeline(data):
-    client = ollama.Client("http://atlas1api.eurecom.fr:8019")
-    results = []
+        idx = list(range(len(sample.factual_data)))
+        random.shuffle(idx)
+        group_size = math.ceil(len(idx) / self._levels)
+        groups = [idx[i:i + group_size] for i in range(0, len(idx), group_size)]
+        noised_sample = sample.with_brackets["A0"]
+        for i, group in enumerate(groups, start=1):
+            selected = [sample.factual_data[j] for j in group]
+            formatted_list = [f"[{term}]" for term in selected]
+            items_to_change = ', '.join(formatted_list)
 
-    for entry in data:
-        question = entry["question"]
-        print(f"Processing question: {entry['question']}")
-        ground_truth = entry["ground_truth"]
+            prompt = (
+                f"```\n{noised_sample}\n```\nItems to change: {items_to_change}\nOUTPUT: "
+            )
 
-        a0 = generate_a0(client, ground_truth)
+            noised_sample = self._llm.query(
+                [
+                    {"role": "system", "content": self._prompt},
+                    {"role": "user", "content": prompt},
+                ]
+            )
 
-        factual_data = bracket_and_list_factual_data(client, a0)
+            sample.with_brackets[f"A{i}"] = noised_sample
+            cleaned = re.sub(r'\[(.*?)]', r'\1', noised_sample)
+            sample.answers[f"A{i}"] = cleaned
 
-        # Filter factual data based on the question
-        filtered_factual_data = filter_factual_data_by_question(factual_data, question)
-
-        random.shuffle(filtered_factual_data)
-
-        answers = {}
-        answers["A0"] = a0
-        fractions = [0.25, 0.50, 0.75, 1.0]
-
-        for i, fraction in enumerate(fractions, start=1):
-            num_items_to_change = math.ceil(len(filtered_factual_data) * fraction)
-            items_for_level = filtered_factual_data[:num_items_to_change]
-            noisy_version = generate_noisy_version(client, a0, items_for_level)
-            answers[f"A{i}"] = noisy_version
-
-        result_entry = {
-            "question": question,
-            "ground_truth": ground_truth,
-            "answers": answers
-        }
-        results.append(result_entry)
-
-    return results
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--output-file", "-o", required=True, type=pathlib.Path)
+    parser.add_argument("--output-dir", "-o", required=True, type=pathlib.Path)
     parser.add_argument("--input-file", "-i", required=True, type=pathlib.Path)
 
     args = parser.parse_args()
 
-    with open(args.input_file, "r", encoding="utf-8") as f:
-        data = json.load(f)  # data must be a list of {"question": ..., "ground_truth": ...}
+    client = OpenAI()
+    llm = LLM(client)
 
-    results = main_pipeline(data)
+    pipeline = (
+        Pipeline()
+        .with_step(ParaphraseStep(llm))
+        .with_step(FactualDataStep(llm))
+        .with_step(FilterItemsFromQuestionStep())
+        .with_step(CreateNoiseExamplesStep(llm))
+    )
 
-    with open(args.output_file, "w", encoding="utf-8") as f:
-        json.dump(results, f, indent=4, ensure_ascii=False)
+    samples, tracker = pipeline.run(JsonReader(args.input_file))
 
-    print(json.dumps(results, indent=4, ensure_ascii=False))
+    report = Report(report=tracker, questions=samples)
+    dataset = report.to_dataset()
+
+    with open(args.output_file / "report.json", "w", encoding="utf-8") as f:
+        f.write(report.model_dump_json(indent=4))
+
+    with open(args.output_file / "dataset.json", "w", encoding="utf-8") as f:
+        f.write(dataset.model_dump_json(indent=4))
+
+    print()
+    print("Stats")
+    print(tracker.model_dump_json(indent=4))
