@@ -6,11 +6,24 @@ import math
 import pathlib
 import random
 import re
-from typing import List, Dict, Optional, Tuple
+from typing import List, Dict, Optional, Tuple, Set
 
+import nltk
 import pydantic
+from nltk.corpus import stopwords
 from openai import OpenAI
 from tqdm import tqdm
+
+
+def process_terms(text: str, allowed_terms: Set[str]) -> str:
+    # Function to determine replacement for each matched bracketed term
+    def replacer(match):
+        term = match.group(1)
+        return f'[{term}]' if term in allowed_terms else f'<{term}>'
+
+    # Use regex to find all bracketed terms and apply the replacer function
+    processed_text = re.sub(r'\[([^]]+)]', replacer, text)
+    return processed_text
 
 
 class LLM:
@@ -165,15 +178,16 @@ class FactualDataStep(Step):
         "(e.g., [discovered], [signed into law])\n"
         "- Well-established causal relationships, meaning causes or major contributors that are widely accepted "
         "and backed by evidence (e.g., [Deforestation] contributes to [habitat loss])\n"
-        "This excludes opinions, interpretations, or vague descriptions.\n"
+        "Exclude opinions, interpretations, or vague descriptions.\n"
         "Example: \n"
-        "Input: On September 6, 1609, only five days after the arrival of the first Dutch and English "
+        "Input: On September 6th, 1609, only five days after the arrival of the first Dutch and English "
         "sailors, John Colman was reportedly killed by attacking Native Americans by an arrow to his neck."
         "\n"
-        "Output: On [September 6], [1609], only [five days] after the arrival of the first [Dutch] and [English] "
+        "Output: On [September 6th, 1609], only [five days] after the arrival of the first [Dutch] and [English] "
         "[sailors], John Colman was [killed by] attacking [Native Americans] [by an arrow] to his [neck]."
         "\n\n"
-        "Output a text with brackets around factual data with no extra annotations, formatting, or comments."
+        "Output a text with brackets around factual data. Do not produce annotations, formatting, or comments, "
+        "only raw text."
         "\n\n"
         "Input: {a0_text}"
         "\n"
@@ -207,6 +221,10 @@ class FilterItemsFromQuestionStep(Step):
     If any token in the bracketed item appears in the question, we skip that item.
     """
 
+    def __init__(self):
+        super().__init__()
+        self._stop_words = set(stopwords.words('english'))
+
     def step(self, sample: Sample, tracker: Tracker) -> None:
         if not sample.is_initialized():
             return
@@ -218,6 +236,7 @@ class FilterItemsFromQuestionStep(Step):
         # Simple tokenization of the question
         # (strip punctuation, lowercase, then split on whitespace)
         question_words = set(re.findall(r"\w+", sample.question.lower()))
+        question_words = question_words - self._stop_words
         sample.blacklisted = [
             term.lower() for term in sample.raw_factual_data
             if any(word.lower() in question_words for word in term.split())
@@ -240,26 +259,31 @@ class CreateNoiseExamplesStep(Step):
         random.shuffle(idx)
         group_size = math.ceil(len(idx) / self._levels)
         groups = [idx[i:i + group_size] for i in range(0, len(idx), group_size)]
-        noised_sample = sample.with_brackets["A0"]
+        a0 = sample.with_brackets["A0"]
+        noised_sample = a0
         for i, group in enumerate(groups, start=1):
             selected = [sample.factual_data[j] for j in group]
             formatted_list = [f"[{term}]" for term in selected]
             items_to_change = ', '.join(formatted_list)
 
+            input_sample = process_terms(noised_sample, items_to_change)
+
             prompt = (
-                f"```\n{noised_sample}\n```\nItems to change: {items_to_change}\nOUTPUT: "
+                f"```\n{input_sample}\n```\n\nOUTPUT: "
             )
 
-            noised_sample = self._llm.query(
+            output_sample = self._llm.query(
                 [
                     {"role": "system", "content": self._prompt},
                     {"role": "user", "content": prompt},
                 ]
             )
 
+            noised_sample = re.sub(r'<(.*?)>', r'[\1]', output_sample)
             sample.with_brackets[f"A{i}"] = noised_sample
-            cleaned = re.sub(r'\[(.*?)]', r'\1', noised_sample)
+            cleaned = re.sub(r'<(.*?)>', r'\1', output_sample)
             sample.answers[f"A{i}"] = cleaned
+
 
 
 if __name__ == "__main__":
@@ -271,6 +295,8 @@ if __name__ == "__main__":
 
     client = OpenAI()
     llm = LLM(client)
+
+    nltk.download('stopwords')
 
     pipeline = (
         Pipeline()
