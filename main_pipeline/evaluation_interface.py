@@ -95,8 +95,8 @@ def create_interface():
 
             gr.Markdown(
                 "For each level (**A0 to A4**), **select the answer (pipeline or human)** that best corresponds to the "
-                "intended degree of correctness. You're not assessing which answer is “better” in isolation, but which one "
-                "more appropriately reflects the **target quality level**."
+                "intended degree of correctness. You're not assessing which answer is “better” in isolation, but which "
+                "one more appropriately reflects the **target quality level**."
             )
 
             gr.Markdown("## 📝 Consider the following:")
@@ -105,7 +105,8 @@ def create_interface():
                 "- Does the selected answer reflect the **intended factual quality** of the level?\n"
                 "- Is the answer **too correct or too incorrect** for the target level?\n"
                 "- Does one of the answers exhibit subtle errors, misleading phrasing, or hallucinations that better "
-                "match the expected degradation?"
+                "match the expected degradation?\n"
+                "- Does the introduced errors are too obvious?"
             )
 
             gr.Markdown(
