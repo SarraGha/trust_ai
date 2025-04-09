@@ -38,10 +38,6 @@ def evaluate_responses(*radio_values):
         for level in sorted(e.item.answers.keys()):
             result = radio_values[i]
             i += 1
-            print(question_id)
-            print(result)
-            print(e.human_on_left)
-            print()
             if result in ("Response 1", "Response 2"):
                 if (result == "Response 1" and e.human_on_left) or (result == "Response 2" and not e.human_on_left):
                     result = "Expert"
