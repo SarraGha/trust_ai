@@ -5,7 +5,7 @@ from typing import List
 
 import gradio as gr
 
-from main_pipeline.models import AssessmentDataset, AssessmentItem
+from models import AssessmentDataset, AssessmentItem
 
 # Set up argument parser
 parser = argparse.ArgumentParser(description='Launch the evaluation interface with a specified dataset.')

@@ -15,7 +15,7 @@ from spacy.symbols import NOUN, PROPN, ADV
 from spacy.tokens import Doc, Span
 from tqdm import tqdm
 
-from main_pipeline.models import Sample, Tracker, Report
+from models import Sample, Tracker, Report
 
 
 def process_terms(text: str, allowed_terms: Set[str]) -> str:
