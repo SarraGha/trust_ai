@@ -11,7 +11,7 @@ import spacy
 from openai import OpenAI
 from spacy import Language, Errors
 from spacy.lang.en import stop_words
-from spacy.symbols import NOUN, PROPN, ADV
+from spacy.symbols import NOUN, PROPN, ADV, ADJ
 from spacy.tokens import Doc, Span
 from tqdm import tqdm
 
@@ -120,6 +120,7 @@ class FactualDataStep(Step):
             "oprd",
             "dobj",
             "advmod",
+            "amod",
             "npadvmod",
             "pcomp",
             "pobj",
@@ -135,7 +136,7 @@ class FactualDataStep(Step):
         conj = doc.vocab.strings.add("conj")
         prev_end = -1
         for i, word in enumerate(doclike):
-            if word.pos not in (NOUN, PROPN, ADV):
+            if word.pos not in (NOUN, PROPN, ADV, ADJ):
                 continue
             # Prevent nested chunks from being produced
             if word.left_edge.i <= prev_end:
