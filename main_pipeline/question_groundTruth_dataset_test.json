@@ -1,6 +1,22 @@
 [
-    {
+{
         "question": "What are the main causes of climate change?",
         "ground_truth": "Climate change is primarily caused by human activities that increase the concentration of greenhouse gases in the atmosphere. The burning of fossil fuels (coal, oil, and natural gas) for energy and transportation is the largest contributor. Deforestation, industrial processes, and agricultural practices also release significant amounts of carbon dioxide, methane, and nitrous oxide, which trap heat in the atmosphere and lead to global warming."
+    },
+    {
+        "question": "How does photosynthesis work in plants?",
+        "ground_truth": "Photosynthesis is the process by which plants convert light energy into chemical energy stored in glucose. It occurs in the chloroplasts of plant cells, where chlorophyll absorbs sunlight. The process uses carbon dioxide from the air and water from the soil, producing glucose and oxygen as byproducts. The overall chemical equation is: 6CO\u2082 + 6H\u2082O + light energy \u2192 C\u2086H\u2081\u2082O\u2086 + 6O\u2082."
+    },
+    {
+        "question": "What are the main functions of the human skeleton?",
+        "ground_truth": "The human skeleton serves several critical functions. It provides structural support for the body, enabling movement by anchoring muscles. It protects vital organs, such as the brain (skull), heart, and lungs (ribcage). The skeleton also produces blood cells in the bone marrow, stores essential minerals like calcium and phosphorus, and helps regulate mineral balance in the body."
+    },
+    {
+        "question": "What are the differences between renewable and non-renewable energy sources?",
+        "ground_truth": "Renewable energy sources are those that can be replenished naturally over short periods of time, such as solar, wind, hydroelectric, geothermal, and biomass energy. Non-renewable energy sources, like coal, oil, natural gas, and nuclear energy, are finite and take millions of years to form. Renewable energy is generally more sustainable and environmentally friendly, while non-renewable energy contributes to pollution and greenhouse gas emissions."
+    },
+    {
+        "question": "What are the main stages of the water cycle?",
+        "ground_truth": "The water cycle consists of several stages: evaporation, condensation, precipitation, infiltration, and runoff. Evaporation occurs when water from oceans, lakes, and rivers turns into vapor due to heat from the sun. The vapor rises and cools, forming clouds in the condensation stage. Precipitation happens when water droplets in clouds become heavy and fall as rain, snow, or hail. Some of the water infiltrates the ground, replenishing groundwater, while the rest flows back to water bodies as runoff, completing the cycle."
     }
 ]

@@ -2,17 +2,20 @@
 import abc
 import argparse
 import json
-import math
 import pathlib
 import random
 import re
-from typing import List, Dict, Optional, Tuple, Set
+from typing import List, Dict, Tuple, Set, Union, Iterator
 
-import nltk
-import pydantic
-from nltk.corpus import stopwords
+import spacy
 from openai import OpenAI
+from spacy import Language, Errors
+from spacy.lang.en import stop_words
+from spacy.symbols import NOUN, PROPN, ADV
+from spacy.tokens import Doc, Span
 from tqdm import tqdm
+
+from main_pipeline.models import Sample, Tracker, Report
 
 
 def process_terms(text: str, allowed_terms: Set[str]) -> str:
@@ -34,69 +37,6 @@ class LLM:
     def query(self, messages: List[Dict[str, str]]) -> str:
         completion = self._client.chat.completions.create(model="gpt-4o", messages=messages)
         return completion.choices[0].message.content.strip()
-
-
-class Sample(pydantic.BaseModel):
-    question: Optional[str] = None
-    ground_truth: Optional[str] = None
-    raw_factual_data: Optional[List[str]] = {}
-    with_brackets: Dict[str, str] = {}
-    blacklisted: Optional[List[str]] = None
-    factual_data: Optional[List[str]] = None
-    answers: Dict[str, str] = {}
-
-    def is_initialized(self) -> bool:
-        return (
-                self.question is not None and
-                self.ground_truth is not None and
-                "A0" in self.answers.keys() and
-                self.with_brackets and
-                self.raw_factual_data is not None and
-                len(self.raw_factual_data) > 0
-        )
-
-    def is_valid(self) -> bool:
-        return (
-                self.question is not None and
-                self.ground_truth is not None and
-                self.with_brackets and
-                self.raw_factual_data is not None and
-                len(self.raw_factual_data) > 0 and
-                self.blacklisted is not None and
-                self.factual_data is not None and
-                len(self.factual_data) > 0 and
-                self.answers.keys() == {"A0", "A1", "A2", "A3", "A4"}
-        )
-
-
-class Tracker(pydantic.BaseModel):
-    input_samples: int = 0
-    find_factual_data_error: int = 0
-    output_samples: int = 0
-
-
-class Item(pydantic.BaseModel):
-    id: int
-    question: str
-    ground_truth: str
-    answers: Dict[str, str]
-
-    @classmethod
-    def from_sample(cls, id_: int, sample: Sample) -> 'Item':
-        return Item(id=id_, question=sample.question, ground_truth=sample.ground_truth, answers=sample.answers)
-
-
-class Dataset(pydantic.BaseModel):
-    questions: List[Item]
-
-
-class Report(pydantic.BaseModel):
-    report: Tracker
-    questions: List[Sample]
-
-    def to_dataset(self) -> Dataset:
-        items = [Item.from_sample(id_=i, sample=s) for i, s in enumerate(self.questions) if s.is_valid()]
-        return Dataset(questions=items)
 
 
 class Step(abc.ABC):
@@ -144,7 +84,7 @@ class Pipeline:
             collected.append(sample)
             if sample.is_valid():
                 tracker.output_samples += 1
-        return tracker
+        return collected, tracker
 
 
 class ParaphraseStep(Step):
@@ -167,43 +107,80 @@ class ParaphraseStep(Step):
 
 
 class FactualDataStep(Step):
-    prompt = (
-        "# Instructions \n\n"
-        "Given a text extract, place a factual data in the sentence's predicate between brackets [ ]. \n"
-        "A fact is a piece of information that is objectively true, measurable, or verifiable. This includes:\n"
-        "- Dates (e.g., [July 29th], [1991])\n"
-        "- Names of people, places, and organizations (e.g., [Greek], [Pepsi])\n"
-        "- Scientific and technical terms (e.g., [greenhouse gases])\n"
-        "- Numerical data or direct measurements (e.g., [20%], [one third])\n"
-        # "- Objective actions and events that have clear historical, scientific, or legal verification "
-        # "(e.g., [discovered], [signed into law])\n"
-        # "- Well-established causal relationships, meaning consequences or major contributors that are widely accepted "
-        # "and backed by evidence (e.g., Deforestation contributes to [habitat loss])\n"
-        "Do not mark vague, general opinions, interpretations, or vague descriptions. "
-        "Do not mark the sentence subjects.\n\n"
-        "# Example: \n\n"
-        "Input: On September 6th, 1609, only five days after the arrival of the first Dutch and English "
-        "sailors, John Colman was reportedly killed by attacking Native Americans by an arrow to his neck."
-        "\n"
-        "Output: On [September 6th, 1609], only [five days] after the arrival of the first [Dutch] and [English] "
-        "[sailors], John Colman was [killed by] attacking [Native Americans] [by an arrow] to his [neck]."
-        "\n\n"
-        "Output a text with brackets around factual data. Do not produce annotations, formatting, or comments, "
-        "only raw text."
-        "\n\n"
-        "Input: {a0_text}"
-        "\n"
-        "Output: "
-    )
 
-    def __init__(self, llm: LLM):
-        self._llm = llm
+    def __init__(self, nlp: Language):
+        self.nlp = nlp
+
+    @classmethod
+    def span_boxes(cls, doclike: Union[Doc, Span]) -> Iterator[Span]:
+        """
+        Detect base noun phrases and adverbs in the object.
+        """
+        labels = [
+            "oprd",
+            "dobj",
+            "advmod",
+            "npadvmod",
+            "pcomp",
+            "pobj",
+            "dative",
+            "appos",
+            "attr",
+            "ROOT",
+        ]
+        doc = doclike.doc  # Ensure works on both Doc and Span.
+        if not doc.has_annotation("DEP"):
+            raise ValueError(Errors.E029)
+        np_deps = [doc.vocab.strings.add(label) for label in labels]
+        conj = doc.vocab.strings.add("conj")
+        prev_end = -1
+        for i, word in enumerate(doclike):
+            if word.pos not in (NOUN, PROPN, ADV):
+                continue
+            # Prevent nested chunks from being produced
+            if word.left_edge.i <= prev_end:
+                continue
+            if word.dep in np_deps:
+                prev_end = word.i
+                yield doc[word.left_edge.i:word.i + 1]
+            elif word.dep == conj:
+                head = word.head
+                while head.dep == conj and head.head.i < head.i:
+                    head = head.head
+                # If the head is an NP, and we're coordinated to it, we're an NP
+                if head.dep in np_deps:
+                    prev_end = word.i
+                    yield doc[word.left_edge.i:word.i + 1]
+
+    @classmethod
+    def overlaps(cls, idx: List[Tuple[int, int]]) -> bool:
+        sorted_intervals = sorted(idx)
+        return any(
+            current_end > next_start
+            for (_, current_end), (next_start, _) in zip(sorted_intervals, sorted_intervals[1:])
+        )
+
+    def tag_predicate_nouns_and_adverbs(self, sentence: str):
+        doc = self.nlp(sentence)
+
+        idx = []
+        for box in FactualDataStep.span_boxes(doc):
+            idx.append((min(b.idx for b in box), max(b.idx + len(b) for b in box)))
+
+        idx.sort(reverse=True)
+
+        assert not FactualDataStep.overlaps(idx), f"Something went wrong... Overlapping indexes for `{sentence}`"
+
+        boxed_sentence = sentence
+        for start, end in idx:
+            boxed_sentence = boxed_sentence[:start] + "[" + boxed_sentence[start:end] + "]" + boxed_sentence[end:]
+
+        return boxed_sentence
 
     def step(self, sample: Sample, tracker: Tracker) -> None:
         assert "A0" in sample.answers.keys()
-        prompt = self.prompt.format(a0_text=sample.answers["A0"])
 
-        response_text = self._llm.query([{"role": "user", "content": prompt}])
+        response_text = self.tag_predicate_nouns_and_adverbs(sample.answers["A0"])
         sample.with_brackets["A0"] = response_text
 
         matches = re.findall(r"\[(.*?)]", response_text)
@@ -212,9 +189,6 @@ class FactualDataStep(Step):
             return
 
         sample.raw_factual_data = matches
-
-        cleaned = re.sub(r'\[(.*?)]', r'\1', response_text)
-        sample.answers["A0"] = cleaned
 
 
 class FilterItemsFromQuestionStep(Step):
@@ -225,7 +199,7 @@ class FilterItemsFromQuestionStep(Step):
 
     def __init__(self):
         super().__init__()
-        self._stop_words = set(stopwords.words('english'))
+        self._stop_words = set(stop_words.STOP_WORDS)
 
     def step(self, sample: Sample, tracker: Tracker) -> None:
         if not sample.is_initialized():
@@ -253,14 +227,25 @@ class CreateNoiseExamplesStep(Step):
         self._prompt = pathlib.Path("prompt.txt").read_text()
         self._levels = 4
 
+    @classmethod
+    def split_groups(cls, idx: List[int], num: int) -> List[List[int]]:
+        group_size = len(idx) // num
+        remainder = len(idx) % num
+        groups = []
+        start = 0
+        for i in range(num):
+            current_size = group_size + 1 if i < remainder else group_size
+            groups.append(idx[start:start + current_size])
+            start += current_size
+        return groups
+
     def step(self, sample: Sample, tracker: Tracker) -> None:
         if not sample.is_initialized():
             return
 
         idx = list(range(len(sample.factual_data)))
         random.shuffle(idx)
-        group_size = math.ceil(len(idx) / self._levels)
-        groups = [idx[i:i + group_size] for i in range(0, len(idx), group_size)]
+        groups = CreateNoiseExamplesStep.split_groups(idx, self._levels)
         a0 = sample.with_brackets["A0"]
         noised_sample = a0
         for i, group in enumerate(groups, start=1):
@@ -287,7 +272,6 @@ class CreateNoiseExamplesStep(Step):
             sample.answers[f"A{i}"] = cleaned
 
 
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--output-dir", "-o", required=True, type=pathlib.Path)
@@ -298,12 +282,12 @@ if __name__ == "__main__":
     client = OpenAI()
     llm = LLM(client)
 
-    nltk.download('stopwords')
+    nlp = spacy.load("en_core_web_sm")
 
     pipeline = (
         Pipeline()
         .with_step(ParaphraseStep(llm))
-        .with_step(FactualDataStep(llm))
+        .with_step(FactualDataStep(nlp))
         .with_step(FilterItemsFromQuestionStep())
         .with_step(CreateNoiseExamplesStep(llm))
     )
@@ -313,10 +297,10 @@ if __name__ == "__main__":
     report = Report(report=tracker, questions=samples)
     dataset = report.to_dataset()
 
-    with open(args.output_file / "report.json", "w", encoding="utf-8") as f:
+    with open(args.output_dir / "report.json", "w", encoding="utf-8") as f:
         f.write(report.model_dump_json(indent=4))
 
-    with open(args.output_file / "dataset.json", "w", encoding="utf-8") as f:
+    with open(args.output_dir / "dataset.json", "w", encoding="utf-8") as f:
         f.write(dataset.model_dump_json(indent=4))
 
     print()
