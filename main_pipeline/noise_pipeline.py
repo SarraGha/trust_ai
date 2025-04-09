@@ -11,7 +11,7 @@ import spacy
 from openai import OpenAI
 from spacy import Language, Errors
 from spacy.lang.en import stop_words
-from spacy.symbols import NOUN, PROPN, ADV, ADJ
+from spacy.symbols import NOUN, PROPN, ADV, ADJ, amod
 from spacy.tokens import Doc, Span
 from tqdm import tqdm
 
@@ -114,7 +114,7 @@ class FactualDataStep(Step):
     @classmethod
     def span_boxes(cls, doclike: Union[Doc, Span]) -> Iterator[Span]:
         """
-        Detect base noun phrases and adverbs in the object.
+        Detect base noun phrases in the object and adverbs from a dependency parse.
         """
         labels = [
             "oprd",
@@ -135,9 +135,26 @@ class FactualDataStep(Step):
         np_deps = [doc.vocab.strings.add(label) for label in labels]
         conj = doc.vocab.strings.add("conj")
         prev_end = -1
+
+        # Collect subject heads within the doclike (Span or Doc)
+        subject_heads = [token for token in doclike if token.dep_ in {'nsubj', 'nsubjpass'}]
+
+        # Collect indices of all tokens in their subtrees
+        subject_indices = set()
+        for head in subject_heads:
+            subject_indices.update(t.i for t in head.subtree)
+
         for i, word in enumerate(doclike):
             if word.pos not in (NOUN, PROPN, ADV, ADJ):
                 continue
+
+            # Skip if part of the subject
+            if word.i in subject_indices:
+                continue
+
+            if word.pos == ADJ and word.dep == amod:
+                continue
+
             # Prevent nested chunks from being produced
             if word.left_edge.i <= prev_end:
                 continue

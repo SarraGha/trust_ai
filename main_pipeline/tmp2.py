@@ -2,7 +2,7 @@ from typing import Union, Iterator
 
 import spacy
 from spacy import Errors
-from spacy.symbols import NOUN, PROPN, PRON, ADV, ADJ
+from spacy.symbols import NOUN, PROPN, PRON, ADV, ADJ, CONJ, amod
 from spacy.tokens import Doc, Span
 
 if __name__ == "__main__":
@@ -48,6 +48,9 @@ if __name__ == "__main__":
 
             # Skip if part of the subject
             if word.i in subject_indices:
+                continue
+
+            if word.pos == ADJ and word.dep == amod:
                 continue
 
             # Prevent nested chunks from being produced
