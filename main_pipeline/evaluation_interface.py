@@ -134,10 +134,50 @@ def create_interface():
                     ai_diff_html = word_diff(a0_ai_response, ai_response)
 
                     with gr.Row():
+                        # For Response 1
                         with gr.Column():
-                            gr.Markdown(f"**Response 1:** {human_diff_html if human_on_left else ai_diff_html}")
+                            diff_state_1 = gr.State(False)
+                            toggle_button_1 = gr.Button("🔍 Show Diff")
+                            plain_1 = gr.Markdown(human_response if human_on_left else ai_response, visible=True)
+                            diff_1 = gr.Markdown(human_diff_html if human_on_left else ai_diff_html, visible=False)
+
+                            def toggle_diff_btn_1(show):
+                                new_show = not show
+                                return [
+                                    gr.update(visible=not new_show),  # plain_1
+                                    gr.update(visible=new_show),  # diff_1
+                                    gr.update(value="🔍 Hide Diff" if new_show else "🔍 Show Diff"),
+                                    # toggle_button_1 label
+                                    new_show  # update state
+                                ]
+
+                            toggle_button_1.click(
+                                fn=toggle_diff_btn_1,
+                                inputs=[diff_state_1],
+                                outputs=[plain_1, diff_1, toggle_button_1, diff_state_1]
+                            )
+
                         with gr.Column():
-                            gr.Markdown(f"**Response 2:** {ai_diff_html if human_on_left else human_diff_html}")
+                            diff_state_2 = gr.State(False)
+                            toggle_button_2 = gr.Button("🔍 Show Diff")
+                            plain_2 = gr.Markdown(ai_response if human_on_left else human_response, visible=True)
+                            diff_2 = gr.Markdown(ai_diff_html if human_on_left else human_diff_html, visible=False)
+
+                            def toggle_diff_btn_2(show):
+                                new_show = not show
+                                return [
+                                    gr.update(visible=not new_show),  # plain_1
+                                    gr.update(visible=new_show),  # diff_1
+                                    gr.update(value="🔍 Hide Diff" if new_show else "🔍 Show Diff"),
+                                    # toggle_button_1 label
+                                    new_show  # update state
+                                ]
+
+                            toggle_button_2.click(
+                                fn=toggle_diff_btn_2,
+                                inputs=[diff_state_2],
+                                outputs=[plain_2, diff_2, toggle_button_2, diff_state_2]
+                            )
 
                     radios.append(
                         gr.Radio(
@@ -150,7 +190,6 @@ def create_interface():
         submit_button = gr.Button("Submit Preferences")
         output_text = gr.Textbox(label="Evaluation Results", interactive=False)
 
-        print(len(radios))
         # Final submission button
         submit_button.click(evaluate_responses, inputs=radios, outputs=[output_text])
 
