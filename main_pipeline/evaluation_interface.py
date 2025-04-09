@@ -1,4 +1,6 @@
 import argparse
+import difflib
+import html
 import json
 import random
 from typing import List
@@ -26,6 +28,25 @@ class EvaluationItem:
 
 
 inputs: List[EvaluationItem] = []
+
+
+def word_diff(prev: str, current: str) -> str:
+    prev_words = prev.split()
+    curr_words = current.split()
+
+    diff = difflib.ndiff(prev_words, curr_words)
+    result = []
+
+    for word in diff:
+        tag = word[:2]
+        text = html.escape(word[2:])
+        if tag == "- ":
+            result.append(f"<span style='color:red;text-decoration:line-through;'>{text}</span>")
+        elif tag == "+ ":
+            result.append(f"<span style='color:green;'>{text}</span>")
+        elif tag == "  ":
+            result.append(f"{text}")
+    return " ".join(result)
 
 
 # Function to evaluate responses
@@ -103,15 +124,20 @@ def create_interface():
             with gr.Accordion(f"Question: {question_text}", open=False):
                 gr.Markdown(f"**Ground Truth:** {ground_truth}")
 
+                a0_ai_response = question.answers["A0"]["ai"]
+                a0_human_response = question.answers["A0"]["human"]
                 for k, a in sorted(question.answers.items(), key=lambda i: i[0]):
                     level = k
                     human_response, ai_response = a["human"], a["ai"]
 
+                    human_diff_html = word_diff(a0_human_response, human_response)
+                    ai_diff_html = word_diff(a0_ai_response, ai_response)
+
                     with gr.Row():
                         with gr.Column():
-                            gr.Markdown(f"**Response 1:** {human_response if human_on_left else ai_response}")
+                            gr.Markdown(f"**Response 1:** {human_diff_html if human_on_left else ai_diff_html}")
                         with gr.Column():
-                            gr.Markdown(f"**Response 2:** {ai_response if human_on_left else human_response}")
+                            gr.Markdown(f"**Response 2:** {ai_diff_html if human_on_left else human_diff_html}")
 
                     radios.append(
                         gr.Radio(
