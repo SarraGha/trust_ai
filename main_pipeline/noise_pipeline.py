@@ -152,7 +152,7 @@ class FactualDataStep(Step):
             if word.i in subject_indices:
                 continue
 
-            if word.pos == ADJ and word.dep == amod:
+            if word.pos == ADJ and word.dep == amod and word.head.pos in (NOUN, PROPN):
                 continue
 
             # Prevent nested chunks from being produced
