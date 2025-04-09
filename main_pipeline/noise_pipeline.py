@@ -22,7 +22,7 @@ def process_terms(text: str, allowed_terms: Set[str]) -> str:
     # Function to determine replacement for each matched bracketed term
     def replacer(match):
         term = match.group(1)
-        return f'[{term}]' if term in allowed_terms else f'<{term}>'
+        return f'[{term}]' if term in allowed_terms else f'{{{{{term}}}}}'
 
     # Use regex to find all bracketed terms and apply the replacer function
     processed_text = re.sub(r'\[([^]]+)]', replacer, text)
@@ -267,9 +267,9 @@ class CreateNoiseExamplesStep(Step):
                 ]
             )
 
-            noised_sample = re.sub(r'<(.*?)>', r'[\1]', output_sample)
+            noised_sample = re.sub(r'\{\{(.*?)}}', r'[\1]', output_sample)
             sample.with_brackets[f"A{i}"] = noised_sample
-            cleaned = re.sub(r'<(.*?)>', r'\1', output_sample)
+            cleaned = re.sub(r'\{\{(.*?)}}', r'\1', output_sample)
             sample.answers[f"A{i}"] = cleaned
 
 
