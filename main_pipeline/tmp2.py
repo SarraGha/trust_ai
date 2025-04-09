@@ -2,7 +2,7 @@ from typing import Union, Iterator
 
 import spacy
 from spacy import Errors
-from spacy.symbols import NOUN, PROPN, PRON, ADV
+from spacy.symbols import NOUN, PROPN, PRON, ADV, ADJ
 from spacy.tokens import Doc, Span
 
 if __name__ == "__main__":
@@ -18,6 +18,7 @@ if __name__ == "__main__":
             "oprd",
             "dobj",
             "advmod",
+            "amod",
             "npadvmod",
             "pcomp",
             "pobj",
@@ -32,9 +33,23 @@ if __name__ == "__main__":
         np_deps = [doc.vocab.strings.add(label) for label in labels]
         conj = doc.vocab.strings.add("conj")
         prev_end = -1
+
+        # Collect subject heads within the doclike (Span or Doc)
+        subject_heads = [token for token in doclike if token.dep_ in {'nsubj', 'nsubjpass'}]
+
+        # Collect indices of all tokens in their subtrees
+        subject_indices = set()
+        for head in subject_heads:
+            subject_indices.update(t.i for t in head.subtree)
+
         for i, word in enumerate(doclike):
-            if word.pos not in (NOUN, PROPN, ADV):
+            if word.pos not in (NOUN, PROPN, ADV, ADJ):
                 continue
+
+            # Skip if part of the subject
+            if word.i in subject_indices:
+                continue
+
             # Prevent nested chunks from being produced
             if word.left_edge.i <= prev_end:
                 continue
@@ -71,7 +86,19 @@ if __name__ == "__main__":
 
     # Example usage
 
-    sentence = "The quick brown fox jumps over the lazy dog"
+    sentence = "Castlereagh wounded Canning in the leg, and the incident led to the collapse of the Portland government and the advancement of Spencer Perceval as the new Prime Minister."
+    tagged = tag_predicate_roles(sentence)
+    print(tagged)
+
+    sentence = "Renewable energy sources are those that are naturally replenished in short timeframes, including solar, wind, hydroelectric, geothermal, and biomass energy."
+    tagged = tag_predicate_roles(sentence)
+    print(tagged)
+
+    sentence = "The quick brown fox jumps over a box."
+    tagged = tag_predicate_roles(sentence)
+    print(tagged)
+
+    sentence = "Human activities are the main drivers of climate change, as they elevate the levels of greenhouse gases in the atmosphere."
     tagged = tag_predicate_roles(sentence)
     print(tagged)
 
