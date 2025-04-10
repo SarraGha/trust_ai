@@ -2,7 +2,7 @@ from typing import Union, Iterator
 
 import spacy
 from spacy import Errors
-from spacy.symbols import NOUN, PROPN, ADV, ADJ, amod
+from spacy.symbols import NOUN, PROPN, ADV, ADJ, amod, NUM
 from spacy.tokens import Doc, Span
 
 if __name__ == "__main__":
@@ -54,7 +54,7 @@ if __name__ == "__main__":
                     subject_indices.difference_update(relcl_subtree)
 
         for i, word in enumerate(doclike):
-            if word.pos not in (NOUN, PROPN, ADV, ADJ):
+            if word.pos not in (NOUN, PROPN, ADV, ADJ, NUM):
                 continue
 
             # Skip if part of the subject
@@ -68,7 +68,7 @@ if __name__ == "__main__":
             if word.left_edge.i <= prev_end:
                 continue
 
-            if word.dep in np_deps:
+            if word.dep in np_deps or (word.pos == NUM and word.dep_ in ("nummod", "appos", "attr")):
                 prev_end = word.i
                 yield doc[word.left_edge.i:word.i + 1]
             elif word.dep == conj:

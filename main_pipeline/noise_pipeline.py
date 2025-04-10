@@ -11,7 +11,7 @@ import spacy
 from openai import OpenAI
 from spacy import Language, Errors
 from spacy.lang.en import stop_words
-from spacy.symbols import NOUN, PROPN, ADV, ADJ, amod
+from spacy.symbols import NOUN, PROPN, ADV, ADJ, amod, NUM
 from spacy.tokens import Doc, Span
 from tqdm import tqdm
 
@@ -156,7 +156,7 @@ class FactualDataStep(Step):
                     subject_indices.difference_update(relcl_subtree)
 
         for i, word in enumerate(doclike):
-            if word.pos not in (NOUN, PROPN, ADV, ADJ):
+            if word.pos not in (NOUN, PROPN, ADV, ADJ, NUM):
                 continue
 
             # Skip if part of the subject
@@ -170,7 +170,7 @@ class FactualDataStep(Step):
             if word.left_edge.i <= prev_end:
                 continue
 
-            if word.dep in np_deps:
+            if word.dep in np_deps or (word.pos == NUM and word.dep_ in ("nummod", "appos", "attr")):
                 prev_end = word.i
                 yield doc[word.left_edge.i:word.i + 1]
             elif word.dep == conj:
