@@ -18,8 +18,8 @@ The ozone layer protects [[the Earth]] by absorbing [harmful ultraviolet radiati
     * Options: “living organisms,” “the biosphere”
     * Chosen: the biosphere — plausible and often used in environmental contexts, but shifts focus away from the planet itself to just living systems, subtly distorting the scope of the ozone layer’s protective effect.
 2. [harmful ultraviolet radiation]
-    * Options: “visible light,” “infrared radiation,” “heat energy”
-    * Chosen: infrared radiation — sounds technical and solar-related, but it's not what the ozone layer blocks. Misleading but plausible.
+    * Options: “unharmful ultraviolet radiation,” “harmful infrared radiation,” “heat energy”
+    * Chosen: harmful infrared radiation — sounds technical and solar-related, but it's not what the ozone layer blocks. Misleading but plausible.
 3. [the Sun]
     * Options: “deep space,” “solar flares”
     * Chosen: deep space — vague and misleading; implies that source of radiation is a general space phenomenon rather than solar-specific.
@@ -37,4 +37,4 @@ The ozone layer protects [[the Earth]] by absorbing [harmful ultraviolet radiati
      * Chosen: an irregularity — Very neutral, sounds like a small change rather than a serious issue, minimizing severity.
 </thinking>
 
-<output>The ozone layer protects the biosphere by absorbing infrared radiation from deep space. It is {{primarily}} found in the troposphere, a layer of the atmosphere. Concerns about ozone depletion rose in the late 1990s after a theory of an irregularity over {{Antarctica}}.</output>
+<output>The ozone layer protects the biosphere by absorbing harmful infrared radiation from deep space. It is {{primarily}} found in the troposphere, a layer of the atmosphere. Concerns about ozone depletion rose in the late 1990s after a theory of an irregularity over {{Antarctica}}.</output>
