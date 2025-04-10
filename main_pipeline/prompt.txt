@@ -5,13 +5,36 @@ Each change must be semantically credible, contextually plausible, and linguisti
 
 You can make small adaptations of nearby words ONLY for grammatical correctness. However, all terms between double curly braces {{ }} MUST remain identical as the input. Remove square brackets [ ] from changed terms. Retain the original sentence structure and style wherever possible.
 
-Output ONLY raw content — do not add any notes, explanations, or formatting.
+You are given a free space for planning your strategy. For each replacement word, try to list two to three alternatives and why they are good choices before coming up with a final decision. Output this planning between the marks <thinking></thinking>.
+
+Finally, produce the final raw output without any further notes, explanations, or formatting between he marks <output></output>.
 
 # Example
 ```
-The Castlereagh–Canning duel was [a pistol duel] fought on [September] 21, 1809, between [the British Minister] of {{War}}, Viscount Castlereagh, and [Foreign Secretary], George Canning, at {{Putney Heath}}. The reasons for [the duel] were {{the rivalry}} between {{the two politicians}} and [numerous disagreements] between them over {{the conduct}} of [the war] against {{Napoleonic France}} in 1808 and 1809. Castlereagh wounded Canning in [the leg], and the incident led to [the collapse] of [the Portland government] and [the advancement] of [Spencer Perceval] as [the new Prime Minister]. Castlereagh and Canning, {{meanwhile}}, spent [several years] on {{the backbenches}}, absent from {{any government responsibility}}.
+The ozone layer protects [[the Earth]] by absorbing [harmful ultraviolet radiation] from [the Sun]. It is {{primarily}} found in [the stratosphere], a layer of the atmosphere. Concerns about ozone depletion rose in [the 1980s] after [the discovery] of [a hole] over {{Antarctica}}.
 ```
+<thinking>
+1. [[the Earth]]
+    * Options: “living organisms,” “the biosphere”
+    * Chosen: the biosphere — plausible and often used in environmental contexts, but shifts focus away from the planet itself to just living systems, subtly distorting the scope of the ozone layer’s protective effect.
+2. [harmful ultraviolet radiation]
+    * Options: “visible light,” “infrared radiation,” “heat energy”
+    * Chosen: infrared radiation — sounds technical and solar-related, but it's not what the ozone layer blocks. Misleading but plausible.
+3. [the Sun]
+    * Options: “deep space,” “solar flares”
+    * Chosen: deep space — vague and misleading; implies that source of radiation is a general space phenomenon rather than solar-specific.
+4. [the stratosphere]
+    * Options: “mesosphere,” “troposphere,” “ionosphere”
+    * Chosen: troposphere — the lowest layer, where weather happens, not where ozone is concentrated. Still sounds reasonable to a non-expert.
+5. [the 1980s]
+     * Options: “the late 1990s” “the 1970s,” “the early 1990s”
+     * Chosen: the late 1990s — shifts timeline by a bit, particularly when the problem became of concern for the general public.
+6. [the discovery]
+     * Options: “a theory,” “an assumption,” “a hypothesis”
+     * Chosen: a theory — undermines scientific certainty subtly without being absurd.
+7. [a hole]
+     * Options: “an irregularity,” “a gap,” “a reduction”
+     * Chosen: an irregularity — Very neutral, sounds like a small change rather than a serious issue, minimizing severity.
+</thinking>
 
-(Replacing a pistol duel by sword duel; Omitting September, which makes the statement less precise; Removing the day (21) from the sentence to make it syntactically correct; Changing British Minister to Secretary of War, a position that did not exist at the time but still plausible; changing from Foreign Secretary to Foreign Minister, another government position that did not exist but still likely to not be spotted by a non-expert reader; Replacing the duel for the fight, a close synonym that conveys the wrong facts; Changing from a general statement "numerous disagreements" to a specific cause "a policy disagreement"; Replacing "the war" against France with "the colonial disputes"; Modifying where Castlereagh wounded Canning from leg to arm; Replacing the government collapse with the government consolidation; Changing the reference of the Portland government with the Grenville government, a Prime Minister just before Portland; Replacing "the advancement" with "the candidacy"; Misspelling Spencer Perceval as Spency Percibal, likely to get passed by a non-attentive reader; Replacing Spencer Perceval role as Prime Minister as Minister for the Cabinet Office, a modern position that doesn't existed at the time; Changing the time frame from years to decades)
-
-OUTPUT: The Castlereagh–Canning duel was a sword duel fought on 1809, between the Secretary of {{War}}, Viscount Castlereagh, and Foreign Minister, George Canning, at {{Putney Heath}}. The reasons for the fight were {{the rivalry}} between {{the two politicians}} and a policy disagreement between them over {{the conduct}} of the colonial disputes against {{Napoleonic France}} in 1808 and 1809. Castlereagh wounded Canning in the arm, and the incident led to the consolidation of the Grenville government and the candidacy of Spency Percibal as Minister for the Cabinet Office. Castlereagh and Canning, {{meanwhile}}, spent several decades on {{the backbenches}}, absent from {{any government responsibility}}.
+<output>The ozone layer protects the biosphere by absorbing infrared radiation from deep space. It is {{primarily}} found in the troposphere, a layer of the atmosphere. Concerns about ozone depletion rose in the late 1990s after a theory of an irregularity over {{Antarctica}}.</output>

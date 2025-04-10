@@ -271,6 +271,16 @@ class CreateNoiseExamplesStep(Step):
             start += current_size
         return groups
 
+    @classmethod
+    def parse_response(cls, text: str) -> Tuple[str, str]:
+        thinking_match = re.search(r'<thinking>(.*?)</thinking>', text, re.DOTALL)
+        output_match = re.search(r'<output>(.*?)</output>', text, re.DOTALL)
+
+        return (
+            thinking_match.group(1).strip() if thinking_match else None,
+            output_match.group(1).strip() if output_match else None
+        )
+
     def step(self, sample: Sample, tracker: Tracker) -> None:
         if not sample.is_initialized():
             return
@@ -287,9 +297,7 @@ class CreateNoiseExamplesStep(Step):
 
             input_sample = process_terms(noised_sample, items_to_change)
 
-            prompt = (
-                f"```\n{input_sample}\n```\n\nOUTPUT: "
-            )
+            prompt = f"```\n{input_sample}\n```"
 
             output_sample = self._llm.query(
                 [
@@ -298,10 +306,16 @@ class CreateNoiseExamplesStep(Step):
                 ]
             )
 
-            noised_sample = re.sub(r'\{\{(.*?)}}', r'[\1]', output_sample)
-            sample.with_brackets[f"A{i}"] = noised_sample
-            cleaned = re.sub(r'\{\{(.*?)}}', r'\1', output_sample)
-            sample.answers[f"A{i}"] = cleaned
+            thinking, output = CreateNoiseExamplesStep.parse_response(output_sample)
+
+            if thinking:
+                sample.thinking[f"A{i}"] = thinking
+
+            if output:
+                noised_sample = re.sub(r'\{\{(.*?)}}', r'[\1]', output)
+                sample.with_brackets[f"A{i}"] = noised_sample
+                cleaned = re.sub(r'\{\{(.*?)}}', r'\1', output)
+                sample.answers[f"A{i}"] = cleaned
 
 
 if __name__ == "__main__":

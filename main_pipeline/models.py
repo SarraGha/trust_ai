@@ -8,6 +8,7 @@ class Sample(pydantic.BaseModel):
     ground_truth: Optional[str] = None
     raw_factual_data: Optional[List[str]] = {}
     with_brackets: Dict[str, str] = {}
+    thinking: Dict[str, str] = {}
     blacklisted: Optional[List[str]] = None
     factual_data: Optional[List[str]] = None
     answers: Dict[str, str] = {}
@@ -32,7 +33,8 @@ class Sample(pydantic.BaseModel):
                 self.blacklisted is not None and
                 self.factual_data is not None and
                 len(self.factual_data) > 0 and
-                self.answers.keys() == {"A0", "A1", "A2", "A3", "A4"}
+                self.answers.keys() == {"A0", "A1", "A2", "A3", "A4"} and
+                self.thinking.keys() == {"A1", "A2", "A3", "A4"}
         )
 
 
