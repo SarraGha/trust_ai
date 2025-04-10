@@ -254,10 +254,10 @@ class FilterItemsFromQuestionStep(Step):
 
 class CreateNoiseExamplesStep(Step):
 
-    def __init__(self, llm: LLM):
+    def __init__(self, llm: LLM, levels: int = 4):
         self._llm = llm
         self._prompt = pathlib.Path("prompt.txt").read_text()
-        self._levels = 4
+        self._levels = levels
 
     @classmethod
     def split_groups(cls, idx: List[int], num: int) -> List[List[int]]:
