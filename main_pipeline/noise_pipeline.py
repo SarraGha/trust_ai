@@ -7,7 +7,7 @@ import pathlib
 import random
 import re
 from json import JSONDecodeError
-from typing import List, Dict, Tuple, Set, Union, Iterator
+from typing import List, Dict, Tuple, Union, Iterator
 
 import spacy
 from openai import OpenAI
@@ -20,11 +20,16 @@ from tqdm import tqdm
 from models import Sample, Tracker, Report
 
 
-def process_terms(text: str, allowed_terms: Set[str]) -> str:
+def process_terms(text: str, allowed_terms: List[str]) -> str:
+    allowed_terms = [t.lower() for t in allowed_terms]
+
     # Function to determine replacement for each matched bracketed term
     def replacer(match):
         term = match.group(1)
-        return f'[{term}]' if term in allowed_terms else f'{{{{{term}}}}}'
+        if term.lower() in allowed_terms:
+            allowed_terms.remove(term.lower())  # break repetition by taking the first occurrence
+            return f'[{term}]'
+        return f'{{{{{term}}}}}'
 
     # Use regex to find all bracketed terms and apply the replacer function
     processed_text = re.sub(r'\[([^]]+)]', replacer, text)
@@ -329,7 +334,8 @@ class FilterFactualDataStep(Step):
         if not sample.is_ranked():
             return
 
-        sample.factual_data = sample.ranked_factual_data[:math.ceil(len(sample.ranked_factual_data) * self._keep)]
+        selected = sample.ranked_factual_data[:math.ceil(len(sample.ranked_factual_data) * self._keep)]
+        sample.factual_data = [s for s in selected if s not in sample.blacklisted]
 
 
 class CreateNoiseExamplesStep(Step):
@@ -383,11 +389,7 @@ class CreateNoiseExamplesStep(Step):
         noised_sample = a0
         for i, group in enumerate(groups, start=1):
             selected = [sample.factual_data[j] for j in group]
-            formatted_list = [f"[{term}]" for term in selected]
-            items_to_change = ', '.join(formatted_list)
-
-            input_sample = process_terms(noised_sample, items_to_change)
-
+            input_sample = process_terms(noised_sample, selected)
             prompt = f"```\n{input_sample}\n```"
 
             output_sample = self._llm.query(
