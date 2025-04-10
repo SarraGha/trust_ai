@@ -260,7 +260,7 @@ class RankFactualDataStep(Step):
 
     PROMPT = (
         "Output the indexes of terms in square brackets [ ] from the text between triple backticks ``` "
-        "by terms that shape what the text is about, who it involves, and consequences. "
+        "by terms that shape what the text is about, who it involves, consequences, hard numbers, dates, and facts. "
         "Downrank marked terms that are vague references, general connectors, or dependent on other terms in square "
         "brackets. You are given a free space to decide your ranking strategy between the tags <thinking></thinking>\n"
         "\n"
