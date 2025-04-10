@@ -103,6 +103,10 @@ if __name__ == "__main__":
 
     # Example usage
 
+    sentence = "The ozone layer protects the Earth by absorbing harmful ultraviolet radiation from the Sun. It is primarily found in the stratosphere, a layer of the atmosphere. Concerns about ozone depletion rose in the 1980s after the discovery of a hole over Antarctica."
+    tagged = tag_predicate_roles(sentence)
+    print(tagged)
+
     sentence = "Human activities that elevate the levels of greenhouse gases in the atmosphere are the main drivers of climate change."
     tagged = tag_predicate_roles(sentence)
     print(tagged)
