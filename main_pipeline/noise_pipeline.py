@@ -304,6 +304,10 @@ class RankFactualDataStep(Step):
 
         for _ in range(self._max_retries):
             llm_judgement = self._llm.query(messages=[{"role": "user", "content": prompt}])
+
+            if "OUTPUT: " not in llm_judgement:
+                continue
+
             _, ranks_str = llm_judgement.split("OUTPUT: ")
 
             try:
