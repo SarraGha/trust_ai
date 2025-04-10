@@ -129,9 +129,12 @@ class FactualDataStep(Step):
             "attr",
             "ROOT",
         ]
+
         doc = doclike.doc  # Ensure works on both Doc and Span.
+
         if not doc.has_annotation("DEP"):
             raise ValueError(Errors.E029)
+
         np_deps = [doc.vocab.strings.add(label) for label in labels]
         conj = doc.vocab.strings.add("conj")
         prev_end = -1
@@ -142,7 +145,15 @@ class FactualDataStep(Step):
         # Collect indices of all tokens in their subtrees
         subject_indices = set()
         for head in subject_heads:
-            subject_indices.update(t.i for t in head.subtree)
+            # Add all tokens in the subject head's subtree
+            head_subtree = {t.i for t in head.subtree}
+            subject_indices.update(head_subtree)
+
+            # Subtract tokens in relative clauses (relcl) attached to the subject head
+            for child in head.children:
+                if child.dep_ == "relcl":
+                    relcl_subtree = {t.i for t in child.subtree}
+                    subject_indices.difference_update(relcl_subtree)
 
         for i, word in enumerate(doclike):
             if word.pos not in (NOUN, PROPN, ADV, ADJ):
@@ -158,13 +169,16 @@ class FactualDataStep(Step):
             # Prevent nested chunks from being produced
             if word.left_edge.i <= prev_end:
                 continue
+
             if word.dep in np_deps:
                 prev_end = word.i
                 yield doc[word.left_edge.i:word.i + 1]
             elif word.dep == conj:
                 head = word.head
+
                 while head.dep == conj and head.head.i < head.i:
                     head = head.head
+
                 # If the head is an NP, and we're coordinated to it, we're an NP
                 if head.dep in np_deps:
                     prev_end = word.i

@@ -2,7 +2,7 @@ from typing import Union, Iterator
 
 import spacy
 from spacy import Errors
-from spacy.symbols import NOUN, PROPN, PRON, ADV, ADJ, CONJ, amod
+from spacy.symbols import NOUN, PROPN, ADV, ADJ, amod
 from spacy.tokens import Doc, Span
 
 if __name__ == "__main__":
@@ -27,9 +27,12 @@ if __name__ == "__main__":
             "attr",
             "ROOT",
         ]
+
         doc = doclike.doc  # Ensure works on both Doc and Span.
+
         if not doc.has_annotation("DEP"):
             raise ValueError(Errors.E029)
+
         np_deps = [doc.vocab.strings.add(label) for label in labels]
         conj = doc.vocab.strings.add("conj")
         prev_end = -1
@@ -40,7 +43,15 @@ if __name__ == "__main__":
         # Collect indices of all tokens in their subtrees
         subject_indices = set()
         for head in subject_heads:
-            subject_indices.update(t.i for t in head.subtree)
+            # Add all tokens in the subject head's subtree
+            head_subtree = {t.i for t in head.subtree}
+            subject_indices.update(head_subtree)
+
+            # Subtract tokens in relative clauses (relcl) attached to the subject head
+            for child in head.children:
+                if child.dep_ == "relcl":
+                    relcl_subtree = {t.i for t in child.subtree}
+                    subject_indices.difference_update(relcl_subtree)
 
         for i, word in enumerate(doclike):
             if word.pos not in (NOUN, PROPN, ADV, ADJ):
@@ -56,13 +67,16 @@ if __name__ == "__main__":
             # Prevent nested chunks from being produced
             if word.left_edge.i <= prev_end:
                 continue
+
             if word.dep in np_deps:
                 prev_end = word.i
                 yield doc[word.left_edge.i:word.i + 1]
             elif word.dep == conj:
                 head = word.head
+
                 while head.dep == conj and head.head.i < head.i:
                     head = head.head
+
                 # If the head is an NP, and we're coordinated to it, we're an NP
                 if head.dep in np_deps:
                     prev_end = word.i
@@ -88,6 +102,10 @@ if __name__ == "__main__":
 
 
     # Example usage
+
+    sentence = "Human activities that elevate the levels of greenhouse gases in the atmosphere are the main drivers of climate change."
+    tagged = tag_predicate_roles(sentence)
+    print(tagged)
 
     sentence = "Castlereagh wounded Canning in the leg, and the incident led to the collapse of the Portland government and the advancement of Spencer Perceval as the new Prime Minister."
     tagged = tag_predicate_roles(sentence)
