@@ -339,7 +339,7 @@ class FilterFactualDataStep(Step):
             return
 
         selected = sample.ranked_factual_data[:math.ceil(len(sample.ranked_factual_data) * self._keep)]
-        sample.factual_data = [s for s in selected if s not in sample.blacklisted]
+        sample.factual_data = [s for s in selected if s.lower() not in sample.blacklisted]
 
 
 class CreateNoiseExamplesStep(Step):
