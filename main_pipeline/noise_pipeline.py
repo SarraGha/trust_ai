@@ -300,12 +300,12 @@ class RankFactualDataStep(Step):
         for idx, term in enumerate(terms):
             text = text.replace(f'[{term}]', f'[{term}:{idx}]', 1)
 
-        prompt = f"{RankFactualDataStep.PROMPT}\n\nNow it's your turn.\n\n```\n{text}\n```\nOUTPUT: "
+        prompt = f"{RankFactualDataStep.PROMPT}\n\nNow it's your turn.\n\n```\n{text}\n```\n"
 
         for _ in range(self._max_retries):
             llm_judgement = self._llm.query(messages=[{"role": "user", "content": prompt}])
 
-            if "OUTPUT: " not in llm_judgement:
+            if "OUTPUT:" not in llm_judgement:
                 continue
 
             _, ranks_str = llm_judgement.split("OUTPUT: ")
