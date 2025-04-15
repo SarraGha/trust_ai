@@ -308,7 +308,7 @@ class RankFactualDataStep(Step):
             if "OUTPUT:" not in llm_judgement:
                 continue
 
-            _, ranks_str = llm_judgement.split("OUTPUT: ")
+            _, ranks_str = llm_judgement.split("OUTPUT:")
 
             try:
                 ranks = json.loads(ranks_str.strip())
