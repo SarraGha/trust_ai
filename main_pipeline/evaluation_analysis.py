@@ -32,7 +32,7 @@ if __name__ == "__main__":
     df = pd.DataFrame(data)
 
     # One-sided Z-test for H1: p_AI - p_Human > delta
-    filtered = df[df["noise_level"] != "A0"]
+    filtered = df
     df0 = filtered[filtered['expert'] == 0][['id', 'noise_level', 'preference']]
     df1 = filtered[filtered['expert'] == 1][['id', 'noise_level', 'preference']]
 

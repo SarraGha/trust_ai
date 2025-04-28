@@ -11,10 +11,10 @@ Finally, produce the final raw output without any further notes, explanations, o
 
 # Example
 ```
-The ozone layer protects [[the Earth]] by absorbing [harmful ultraviolet radiation] from [the Sun]. It is {{primarily}} found in [the stratosphere], a layer of the atmosphere. Concerns about ozone depletion rose in [the 1980s] after [the discovery] of [a hole] over {{Antarctica}}.
+The ozone layer protects [the Earth] by absorbing [harmful ultraviolet radiation] from [the Sun]. It is {{primarily}} found in [the stratosphere], a layer of the atmosphere. Concerns about ozone depletion rose in [the 1980s] after [the discovery] of [a hole] over {{Antarctica}}.
 ```
 <thinking>
-1. [[the Earth]]
+1. [the Earth]
     * Options: “living organisms,” “the biosphere”
     * Chosen: the biosphere — plausible and often used in environmental contexts, but shifts focus away from the planet itself to just living systems, subtly distorting the scope of the ozone layer’s protective effect.
 2. [harmful ultraviolet radiation]
