@@ -162,7 +162,7 @@ if __name__ == "__main__":
             else:
                 evaluator = OllamaEvaluator(client, model_name)
 
-            for entry in tqdm(dataset.questions[:5], desc=f"Evaluating {model_name}"):
+            for entry in tqdm(dataset.questions, desc=f"Evaluating {model_name}"):
                 question_text = entry.question
                 ground_truth = entry.ground_truth
                 answers = entry.answers
