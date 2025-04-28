@@ -89,3 +89,25 @@ class AssessmentItem(pydantic.BaseModel):
 
 class AssessmentDataset(pydantic.BaseModel):
     questions: List[AssessmentItem]
+
+
+class LLMasJudgeEvaluationItem(pydantic.BaseModel):
+    llm: str
+    id: int
+    question: str
+    answer: str
+    ground_truth: str
+    level: str
+    assessment: str
+    result: int
+
+
+class RagasEvaluationItem(pydantic.BaseModel):
+    type: str
+    fact_extraction_llm: str
+    id: int
+    question: str
+    answer: str
+    ground_truth: str
+    level: str
+    result: float

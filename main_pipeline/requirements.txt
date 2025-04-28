@@ -4,7 +4,7 @@ transformers
 torch
 requests
 pandas
-ragas
+ragas==0.2.15
 matplotlib
 seaborn
 nltk==3.9.1
@@ -12,3 +12,5 @@ bokeh==3.7.2
 selenium==4.31.0
 statsmodels==0.14.4
 bs4==0.0.2
+sentence-transformers==4.1.0
+sentencepiece==0.2.0
