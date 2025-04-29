@@ -28,7 +28,7 @@ An instruction (might include an Input inside it), a response to evaluate, a ref
 {reference_answer}
 
 ###Score Rubrics:
-Does the response demonstrate factual correctness by covering all essential points from the the reference answer without introducing inaccuracies, omissions, or hallucinated information?
+Does the response demonstrate factual correctness by covering all essential points from the reference answer without introducing inaccuracies, omissions, or hallucinated information?
 
 - Score 1: The response is mostly factually incorrect or misleading, with many inaccuracies or fabricated information.
 - Score 2: The response contains multiple factual inaccuracies, significant omissions, or introduces misleading/untrue statements that affect the answer quality.
