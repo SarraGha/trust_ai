@@ -147,7 +147,7 @@ if __name__ == "__main__":
     source = ColumnDataSource(data)
 
     p = figure(x_range=preferences, y_range=(0, grouped.values.max() + 5),
-               height=400, toolbar_location=None, tools="")
+               height=300, width=450, toolbar_location=None, tools="")
     p.add_layout(Legend(), 'right')
 
     colors = ["#03a343", "#d64e0f", "#0f8dd6", "#d90f23"]
@@ -182,8 +182,8 @@ if __name__ == "__main__":
     source = ColumnDataSource(data)
 
     p2 = figure(x_range=preferences, y_range=(0, grouped.values.max() + 5),
-                height=400, toolbar_location=None, tools="")
-    p2.add_layout(Legend(), 'right')
+                height=300, width=350, toolbar_location=None, tools="")
+    # p2.add_layout(Legend(), 'right')
 
     # Define colors for each preference
     colors = ["#030ea3", "#373d94"]
@@ -198,9 +198,10 @@ if __name__ == "__main__":
 
     p2.x_range.range_padding = 0.
     p2.xgrid.grid_line_color = None
-    p2.legend.location = "top_right"
+    p2.legend.location = "top_left"
     p2.legend.orientation = "vertical"
     p2.xaxis.axis_label = "Preference decision"
     p2.yaxis.axis_label = "Count"
+    p2.xaxis.major_label_orientation = -np.pi / 8
 
     export_svg(p2, filename=args.output_dir / "by_expert_preference.svg")
